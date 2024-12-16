@@ -62,7 +62,6 @@ public class AdminUser extends User {
         return isAdmin;
     }
 
-    public void addSubscriptions(Subscription subscription) {this.subscriptions.add(subscription);}
     public void addEvent(GreatEvent event) {this.events.add(event);}
 
 }

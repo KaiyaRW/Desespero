@@ -73,10 +73,10 @@ public class GreatEvent {
     public Date getEndDate() {
         return this.endDate;
     }
-    public void setUuid(Long id) {
+    public void setId(Long id) {
         this.id = id;
     }
-    public Long getUuid() {
+    public Long getId() {
         return this.id;
     }
     public Collection<Session> getSessions(){

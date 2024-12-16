@@ -93,4 +93,7 @@ public abstract class User {
     public void setSubscriptions(Collection<Subscription> subscriptions) {
         this.subscriptions = subscriptions;
     }
+
+    public void addSubscription(Subscription subscription) {subscriptions.add(subscription);
+    }
 }

@@ -1,20 +1,35 @@
 package br.upe.pojos;
 
-import java.time.Instant;
 import java.util.Date;
 import java.util.UUID;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "subscriptions")
 public class Subscription {
 
-    private UUID uuid;
-    private UUID sessionUuid;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private Long id;  // Use Long instead of UUID for database ID
+
+    @Column(name = "user_uuid")
     private UUID userUuid;
+
+    @Column(name = "session_uuid")
+    private UUID sessionUuid;
+
+    @Column(name = "subscription_date")
     private Date date;
 
-    public UUID getUuid() {
-        return this.uuid;
+    public Long getId() {
+        return this.id;
     }
     public UUID getSessionUuid() {
         return sessionUuid;
@@ -25,8 +40,8 @@ public class Subscription {
     public void setUserUuid(UUID userUuid) {
         this.userUuid = userUuid;
     }
-    public void setUuid(UUID uuid) {
-        this.uuid = uuid;
+    public void setId(Long id) {
+        this.id = id;
     }
     public void setSessionUuid(UUID sessionUuid) {
         this.sessionUuid = sessionUuid;

@@ -12,7 +12,7 @@ public class SubscriptionCRUD extends BaseCRUD {
 
     public boolean createSubscription(Subscription subscription){
         try(BufferedWriter buffer = new BufferedWriter(new FileWriter(".\\state\\subscriptions.csv", true))){
-            buffer.write(ParserInterface.validadeString(subscription.getUuid()) + ";");
+            buffer.write(ParserInterface.validadeString(subscription.getId()) + ";");
             buffer.write(ParserInterface.validadeString(subscription.getSessionUuid()) + ";");
             buffer.write(ParserInterface.validadeString(subscription.getUserUuid()) + ";");
             buffer.write((subscription.getDate() != null? ParserInterface.validadeString(subscription.getDate().toInstant().toString()): "") + ";");

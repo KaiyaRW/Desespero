@@ -4,16 +4,38 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.UUID;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "sessions")
 public class Session extends EventComponent {
-    private Collection<Subscription> subscriptions;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private Long id;  // Use Long instead of UUID for database ID
+
+    @Column(name = "start_date")
     private Date startDate;
+
+    @Column(name = "end_date")
     private Date endDate;
 
+    @OneToMany(mappedBy = "session", cascade = CascadeType.ALL)  // OneToMany with cascade
+    private Collection<Subscription> subscriptions;
+
     public void setDescritor(String descritor) {
-        this.descritor = descritor;
+        this.setDescritor(descritor);
     }
     public String getDescritor(){
-        return this.descritor;
+        return this.getDescritor();
     }
     public void addSubscription(Subscription subscription){
         subscriptions.add(subscription);
@@ -24,17 +46,17 @@ public class Session extends EventComponent {
     public void setSubscriptions(Collection<Subscription> subscriptions) {
         this.subscriptions = subscriptions;
     }
-    public void setUuid(UUID uuid) {
-        this.uuid = uuid;
+    public void setId(Long id) {
+        this.setId(id);
     }
-    public UUID getUuid() {
-        return this.uuid;
+    public Long getId() {
+        return this.getId();
     }
     public UUID getEventUuid() {
-        return eventUuid;
+        return getEventUuid();
     }
     public void setEventUuid(UUID eventUuid) {
-        this.eventUuid = eventUuid;
+        this.setEventUuid(eventUuid);
     }
     public Date getStartDate() {
         return this.startDate;

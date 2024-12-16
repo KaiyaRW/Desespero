@@ -1,17 +1,22 @@
 package br.upe.pojos;
 
-import br.upe.operations.EventCRUD;
-import br.upe.operations.SubscriptionCRUD;
-
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.util.Collection;
-import java.util.UUID;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "admin_users")
 public class AdminUser extends User {
-    private final boolean isAdmin = true;
+
+    @OneToMany(mappedBy = "user")
+    private Collection<Subscription> subscriptions;
+
+    @ManyToMany
+    @JoinColumn(name = "admin_uuid", nullable = false)  // Foreign key for AdminUser
     private Collection<GreatEvent> events;
 
     public void setEmail(String email) {
@@ -32,11 +37,11 @@ public class AdminUser extends User {
     public String getPassword() {
         return this.password;
     }
-    public void setUuid(UUID uuid) {
-        this.uuid = uuid;
+    public void setId(Long id) {
+        this.setId(id);
     }
-    public UUID getUuid() {
-        return this.uuid;
+    public Long getId() {
+        return this.getId();
     }
     public void addSubscription(Subscription subscription){
         subscriptions.add(subscription);
@@ -57,7 +62,6 @@ public class AdminUser extends User {
         return isAdmin;
     }
 
-    public void addSubscriptions(Subscription subscription) {this.subscriptions.add(subscription);}
     public void addEvent(GreatEvent event) {this.events.add(event);}
 
 }

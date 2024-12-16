@@ -1,15 +1,23 @@
 package br.upe.pojos;
 
-import br.upe.operations.SubscriptionCRUD;
-
 import java.util.Collection;
 import java.util.UUID;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
+import javax.persistence.Entity;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "common_users")
+@Inheritance(strategy = InheritanceType.JOINED)  // Optional for single table inheritance
 public class CommomUser extends User {
+
     protected final boolean isAdmin = false;
 
+    @OneToMany(mappedBy = "user")  // OneToMany with user
+    private Collection<Subscription> subscriptions;
     public void setEmail(String email) {
         this.email = email;
     }
@@ -28,11 +36,11 @@ public class CommomUser extends User {
     public String getPassword() {
         return this.password;
     }
-    public void setUuid(UUID uuid) {
-        this.uuid = uuid;
+    public void setId(Long id) {
+        this.setId(id);
     }
-    public UUID getUuid() {
-        return this.uuid;
+    public Long getId() {
+        return this.getId();
     }
     public void addSubscription(Subscription subscription){
         subscriptions.add(subscription);

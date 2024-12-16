@@ -14,13 +14,13 @@ public class SessionCRUD extends BaseCRUD {
 
     public void createSession(Session session){
         try(BufferedWriter buffer = new BufferedWriter(new FileWriter(".\\state\\sessions.csv", true))){
-            buffer.write(ParserInterface.validadeString(session.getUuid()) + ";");
+            buffer.write(ParserInterface.validadeString(session.getId()) + ";");
             buffer.write(ParserInterface.validadeString(session.getEventUuid()) + ";");
             buffer.write(ParserInterface.validadeString(session.getDescritor()) + ";");
             buffer.write((session.getStartDate() != null ? ParserInterface.validadeString(session.getStartDate().toInstant()): "") + ";");
             buffer.write((session.getStartDate() != null ? ParserInterface.validadeString(session.getEndDate().toInstant()): "") + ";");
             for (Subscription sub : session.getSubscriptions()){
-                buffer.write(ParserInterface.validadeString(sub.getUuid()) + ",");
+                buffer.write(ParserInterface.validadeString(sub.getId()) + ",");
             }
 
             buffer.write(";");

@@ -14,7 +14,7 @@ public class SubmissionCRUD extends BaseCRUD {
 
     public void createSubmission(Submission submission) {
         try(BufferedWriter buffer = new BufferedWriter(new FileWriter(".\\state\\submissions.csv", true))) {
-            buffer.write(ParserInterface.validadeString(submission.getUuid()) + ";");
+            buffer.write(ParserInterface.validadeString(submission.getId()) + ";");
             buffer.write(ParserInterface.validadeString(submission.getDescritor()) + ";");
             buffer.write(ParserInterface.validadeString(submission.getEventUuid()) + ";");
             buffer.write(ParserInterface.validadeString(submission.getUserUuid()) + ";");

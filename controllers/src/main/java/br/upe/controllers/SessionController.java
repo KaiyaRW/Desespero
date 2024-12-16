@@ -19,7 +19,7 @@ public class SessionController {
         if(stateController.getCurrentUser() instanceof AdminUser){
 
             Session session = KeeperInterface.createSession();
-            session.setUuid(UUID.randomUUID());
+            session.setId(UUID.randomUUID());
             session.setDescritor(descritor);
             session.setEventUuid(stateController.getCurrentEvent().getUuid());
             session.setSubscriptions(new ArrayList<>());
@@ -40,14 +40,14 @@ public class SessionController {
     public boolean updateSessionDescritor(String descritor){
         Session source = KeeperInterface.createSession();
         source.setDescritor(descritor);
-        crudController.sessionCRUD.updateSession(stateController.getCurrentSession().getUuid(), source);
+        crudController.sessionCRUD.updateSession(stateController.getCurrentSession().getId(), source);
         return false;
     }
     public boolean updateSessionStartDate(Date startDate){
         Session source = KeeperInterface.createSession();
         source.setStartDate(startDate);
         if(startDate.after(stateController.getCurrentEvent().getStartDate())){
-            crudController.sessionCRUD.updateSession(stateController.getCurrentSession().getUuid(), source);
+            crudController.sessionCRUD.updateSession(stateController.getCurrentSession().getId(), source);
             return true;
         } return false;
     }
@@ -55,14 +55,14 @@ public class SessionController {
         Session source = KeeperInterface.createSession();
         source.setEndDate(endDate);
         if(endDate.before(stateController.getCurrentEvent().getEndDate())){
-            crudController.sessionCRUD.updateSession(stateController.getCurrentSession().getUuid(), source);
+            crudController.sessionCRUD.updateSession(stateController.getCurrentSession().getId(), source);
             return true;
         } return false;
     }
     public void addSessionsSubscription(){
         Subscription subscription = KeeperInterface.createSubscription();
-        subscription.setUuid(UUID.randomUUID());
-        subscription.setSessionUuid(stateController.getCurrentSession().getUuid());
+        subscription.setId(UUID.randomUUID());
+        subscription.setSessionUuid(stateController.getCurrentSession().getId());
         subscription.setUserUuid(stateController.getCurrentUser().getUuid());
         subscription.setDate(new Date());
 
@@ -80,7 +80,7 @@ public class SessionController {
         sessionHandler.setSubscriptions(stateController.getCurrentSession().getSubscriptions());
 
         crudController.subscriptionCRUD.createSubscription(subscription);
-        crudController.sessionCRUD.updateSession(stateController.getCurrentSession().getUuid(), sessionHandler);
+        crudController.sessionCRUD.updateSession(stateController.getCurrentSession().getId(), sessionHandler);
         crudController.userCRUD.updateUser(stateController.getCurrentUser().getUuid(), userHandler);
     }
     public void changeCurrentSession(UUID sessionUuid){

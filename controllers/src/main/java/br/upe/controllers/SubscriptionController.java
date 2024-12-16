@@ -19,13 +19,13 @@ public class SubscriptionController {
         Session newSession = crudController.sessionCRUD.returnSession(newSubscription.getSessionUuid());
 
         for(Subscription subscription : newUser.getSubscriptions()){
-            if(subscription.getUuid().equals(subscriptionUuid)){
+            if(subscription.getId().equals(subscriptionUuid)){
                 newUser.getSubscriptions().remove(subscription);
             }
         }
 
         for(Subscription subscription : newSession.getSubscriptions()){
-            if(subscription.getUuid().equals(subscriptionUuid)){
+            if(subscription.getId().equals(subscriptionUuid)){
                 newSession.getSubscriptions().remove(subscription);
             }
         }
@@ -45,7 +45,7 @@ public class SubscriptionController {
         crudController.subscriptionCRUD.deleteSubscription(subscriptionUuid);
 
         crudController.userCRUD.updateUser(newUser.getUuid(), userHandler);
-        crudController.sessionCRUD.updateSession(newSession.getUuid(), sessionHandler);
+        crudController.sessionCRUD.updateSession(newSession.getId(), sessionHandler);
 
     }
 

@@ -1,14 +1,8 @@
 package br.upe.controllers;
 
-import br.upe.operations.SubmissionCRUD;
-import br.upe.pojos.AdminUser;
-import br.upe.pojos.KeeperInterface;
 import br.upe.pojos.Submission;
-import br.upe.pojos.User;
 
 import java.util.Collection;
-import java.util.Date;
-import java.util.UUID;
 
 public class TestController {
     public static void main(String[] args){
@@ -31,6 +25,6 @@ public class TestController {
         event.addEventSubmission("Algorítimo genético para análise de subgrupo");
 
         Collection<Submission> sub1 = sub.getAllSubmissionsByUser(state.getCurrentUser().getUuid());
-        sub.removeSubmission(sub1.iterator().next().getUuid());
+        sub.removeSubmission(sub1.iterator().next().getId());
     }
 }

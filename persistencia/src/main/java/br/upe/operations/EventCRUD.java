@@ -21,11 +21,11 @@ public class EventCRUD extends BaseCRUD {
             buffer.write((event.getEndDate() != null ? event.getEndDate().toInstant().toString(): "") + ";");
 
             for (Session session : event.getSessions()){
-                buffer.write(ParserInterface.validadeString(session.getUuid()) + ",");
+                buffer.write(ParserInterface.validadeString(session.getId()) + ",");
             }
             buffer.write(";");
             for (Submission submission : event.getSubmissions()){
-                buffer.write(ParserInterface.validadeString(submission.getUuid()) + ",");
+                buffer.write(ParserInterface.validadeString(submission.getId()) + ",");
             }
 
             buffer.write(";");

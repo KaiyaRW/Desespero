@@ -3,12 +3,10 @@ package br.upe.controllers;
 import br.upe.pojos.GreatEvent;
 import br.upe.pojos.KeeperInterface;
 import br.upe.pojos.Submission;
-import br.upe.pojos.Subscription;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 
 public class SubmissionController {
@@ -57,7 +55,7 @@ public class SubmissionController {
         }
 
         for(Submission submission1 : event.getSubmissions()){
-            if(submission1.getUuid().equals(submissionUuid)){
+            if(submission1.getId().equals(submissionUuid)){
                 event.getSubmissions().remove(submission);
             }
         }
@@ -65,7 +63,7 @@ public class SubmissionController {
         GreatEvent eventHandler = KeeperInterface.createGreatEvent();
         eventHandler.setSubmissions(event.getSubmissions());
 
-        crudController.submissionCRUD.deleteSubmission(submission.getUuid());
+        crudController.submissionCRUD.deleteSubmission(submission.getId());
         crudController.eventCRUD.updateEvent(event.getUuid(), eventHandler);
     }
 }

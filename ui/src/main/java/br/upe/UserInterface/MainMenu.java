@@ -22,34 +22,8 @@ public class MainMenu {
 
     public void displayStartMenu() {
         boolean running = true;
-
         while (running) {
-            System.out.println("App Menu:");
-            System.out.println("1. Menu de Login");
-            System.out.println("2. Sair");
-
-            int choice = scanner.nextInt();
-            scanner.nextLine();
-
-            switch (choice) {
-                case 1:
-                    displayAuthMenu();
-                    break;
-                case 2:
-                    running = false;
-                    break;
-                default:
-                    System.out.println("Opção inválida. Tente novamente.");
-            }
-
-        }
-        System.out.println("Aplicação encerrada.");
-    }
-
-    public void displayAuthMenu() {
-        boolean running = true;
-        while (running) {
-            System.out.println("Auth Menu");
+            System.out.println("App Menu");
             System.out.println("1. Login");
             System.out.println("2. Create new User");
             System.out.println("3. Exit");
@@ -241,8 +215,8 @@ public class MainMenu {
         Date subscriptionDate = new Date();
 
         Subscription subscription = KeeperInterface.createSubscription();
-        subscription.setUuid(userUuid);
-        subscription.setUuid(eventUuid);
+        subscription.setId(userUuid);
+        subscription.setId(eventUuid);
         subscription.setDate(subscriptionDate);
 
         // Tentar criar a inscrição
@@ -282,7 +256,8 @@ public class MainMenu {
             System.out.println("1. Create Event");
             System.out.println("2. List Events");
             System.out.println("3. Update Password");
-            System.out.println("4. Exit");
+            System.out.println("4. Manage Events");
+            System.out.println("5. Exit");
 
             int choice = scanner.nextInt();
             scanner.nextLine();
@@ -307,6 +282,11 @@ public class MainMenu {
                     }
                     break;
                 case 4:
+                    //fazer o manejador de eventos
+                    //um codigo que mostre todos os eventos criados pelo usuario
+                    //e permita vc escolher um entre eles
+                    //ao escolher leva ao displayEventMenu, que ai vc pode modificar o evento
+                case 5:
                     running = false;
                     break;
                 default:
@@ -326,7 +306,9 @@ public class MainMenu {
             System.out.println("4. Update Event Start Date");
             System.out.println("5. Update Event End Date");
             System.out.println("6. Manage Session");
-            System.out.println("7. Exit");
+            System.out.println("7. Create Session");
+            System.out.println("8. List Sessions");
+            System.out.println("9. Exit");
 
             int choice = scanner.nextInt();
             scanner.nextLine();  // Consume newline left-over
@@ -334,6 +316,7 @@ public class MainMenu {
             switch (choice) {
                 case 1:
                     manageSubmissions();
+                    //a ser implementado
                     break;
                 case 2:
                     updateEventDescritor();
@@ -348,9 +331,15 @@ public class MainMenu {
                     updateEventEndDate();
                     break;
                 case 6:
-                    manageSession();
+                    displaySessionMenu();
                     break;
                 case 7:
+                    createNewSession();
+                    break;
+                case 8:
+                    viewAllSessions();
+                    break;
+                case 9:
                     running = false;
                     System.out.println("Exiting...");
                     break;
@@ -388,34 +377,6 @@ public class MainMenu {
             }
         }
 
-    }
-    private void manageSession() {
-        boolean running = true;
-        while (running) {
-            System.out.println("Menu Session from: " + stateController.getCurrentEvent().getDescritor());
-            System.out.println("1. Create Session");
-            System.out.println("2. List Sessions");
-            System.out.println("3. Exit");
-
-            int choice = scanner.nextInt();
-            scanner.nextLine();
-
-            switch (choice) {
-                case 1:
-                    createNewSession();
-                    displaySessionMenu();
-                    break;
-                case 2:
-                    viewAllSessions();
-                    displaySessionMenu();
-                    break;
-                case 3:
-                    running = false;
-                    break;
-                default:
-                    System.out.println("Invalid choice. Please try again.");
-            }
-        }
     }
 
     public void viewAllSessions() {
@@ -518,7 +479,7 @@ public class MainMenu {
     }
 
     private void manageSubmissions() {
-        // Implement manage submissions functionality
+        // menu que leva a tela de submissiões, onde vc pode apagar, editar ou adicionar uma submissão
     }
 
     private void updateEventDescritor() {

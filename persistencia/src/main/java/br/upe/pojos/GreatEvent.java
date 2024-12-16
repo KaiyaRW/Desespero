@@ -1,17 +1,44 @@
 package br.upe.pojos;
+
 import java.util.Collection;
 import java.util.Date;
-import java.util.UUID;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "great_events")
 public class GreatEvent {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private Long id;  // Use Long instead of UUID for database ID
+
+    @Column(name = "descritor")
     private String descritor;
+
+    @Column(name = "director")
     private String director;
+
+    @Column(name = "start_date")
     private Date startDate;
+
+    @Column(name = "end_date")
     private Date endDate;
-    private UUID uuid;
+
+    @OneToMany(mappedBy = "greatEvent", cascade = CascadeType.ALL)  // OneToMany with cascade
     private Collection<Session> sessions;
+
+    @OneToMany(mappedBy = "greatEvent", cascade = CascadeType.ALL)  // OneToMany with cascade
     private Collection<Submission> submissions;
+
 
     public Collection<Submission> getSubmissions() {
         return submissions;
@@ -46,11 +73,11 @@ public class GreatEvent {
     public Date getEndDate() {
         return this.endDate;
     }
-    public void setUuid(UUID uuid) {
-        this.uuid = uuid;
+    public void setId(Long id) {
+        this.id = id;
     }
-    public UUID getUuid() {
-        return this.uuid;
+    public Long getId() {
+        return this.id;
     }
     public Collection<Session> getSessions(){
         return this.sessions;

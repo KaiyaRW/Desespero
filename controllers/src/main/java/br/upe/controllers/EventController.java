@@ -64,7 +64,7 @@ public class EventController {
     }
     public void addEventSubmission(String descritor){
         Submission submission = KeeperInterface.createSubmission();
-        submission.setUuid(UUID.randomUUID());
+        submission.setId(id.randomUUID());
         submission.setUserUuid(stateController.getCurrentUser().getUuid());
         submission.setEventUuid(stateController.getCurrentEvent().getUuid());
         submission.setDescritor(descritor);

@@ -1,7 +1,6 @@
 package br.upe.pojos;
 
 import javax.persistence.*;
-import java.util.UUID;
 
 @MappedSuperclass
 public abstract class EventComponent {
@@ -17,8 +16,8 @@ public abstract class EventComponent {
     private String descritor;
     public abstract Long getId();
     public abstract void setId(Long id);
-    public abstract UUID getEventUuid();
-    public abstract void setEventUuid(UUID eventUuid);
+    public abstract Long getEventId();
+    public abstract void setEventId(Long eventId);
     public abstract void setDescritor(String descritor);
     public abstract String getDescritor();
 

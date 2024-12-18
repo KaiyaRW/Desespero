@@ -1,7 +1,6 @@
 package br.upe.UserInterface;
 
 import br.upe.controllers.*;
-import br.upe.operations.HasherInterface;
 import br.upe.pojos.*;
 
 import java.text.ParseException;
@@ -628,7 +627,7 @@ public class MainMenu {
         for (Subscription subscription : stateController.getCurrentUser().getSubscriptions()) {
             if (subscription != null) {
                 System.out.println("index [ " + counter + " ]");
-                System.out.println("Event: " + crudController.sessionCRUD.returnSession(subscription.getSessionUuid()));
+                System.out.println("Event: " + crudController.sessionCRUD.returnSession(subscription.getSessionId()));
                 if (subscription.getDate() != null)
                     System.out.println("Subscription date: " + subscription.getDate().toString());
                 counter++;

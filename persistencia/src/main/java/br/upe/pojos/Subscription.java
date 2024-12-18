@@ -1,7 +1,6 @@
 package br.upe.pojos;
 
 import java.util.Date;
-import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -19,11 +18,11 @@ public class Subscription {
     @Column(name = "id")
     private Long id;  // Use Long instead of UUID for database ID
 
-    @Column(name = "user_uuid")
-    private UUID userUuid;
+    @Column(name = "user_id")
+    private Long userId;
 
-    @Column(name = "session_uuid")
-    private UUID sessionUuid;
+    @Column(name = "session_id")
+    private Long sessionId;
 
     @Column(name = "subscription_date")
     private Date date;
@@ -31,20 +30,18 @@ public class Subscription {
     public Long getId() {
         return this.id;
     }
-    public UUID getSessionUuid() {
-        return sessionUuid;
+    public Long getSessionId() {
+        return sessionId;
     }
-    public UUID getUserUuid() {
-        return userUuid;
-    }
-    public void setUserUuid(UUID userUuid) {
-        this.userUuid = userUuid;
+    public Long getUserId() {return userId; }
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
     public void setId(Long id) {
         this.id = id;
     }
-    public void setSessionUuid(UUID sessionUuid) {
-        this.sessionUuid = sessionUuid;
+    public void setSessionId(Long sessionId) {
+        this.sessionId = sessionId;
     }
     public void setDate(Date date){
         this.date = date;

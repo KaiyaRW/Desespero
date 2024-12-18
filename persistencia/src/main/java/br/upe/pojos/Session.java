@@ -2,7 +2,6 @@ package br.upe.pojos;
 
 import java.util.Collection;
 import java.util.Date;
-import java.util.UUID;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -52,11 +51,9 @@ public class Session extends EventComponent {
     public Long getId() {
         return this.getId();
     }
-    public UUID getEventUuid() {
-        return getEventUuid();
-    }
-    public void setEventUuid(UUID eventUuid) {
-        this.setEventUuid(eventUuid);
+    public Long getEventId() { return getEventId(); }
+    public void setEventId(Long eventId) {
+        this.setEventId(eventId);
     }
     public Date getStartDate() {
         return this.startDate;

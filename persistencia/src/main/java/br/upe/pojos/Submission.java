@@ -1,8 +1,6 @@
 package br.upe.pojos;
 
 import java.util.Date;
-import java.util.UUID;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -22,8 +20,8 @@ public class Submission extends EventComponent {
     @Column(name = "id")
     private Long id;  // Use Long instead of UUID for database ID
 
-    @Column(name = "user_uuid")
-    private UUID userUuid;
+    @Column(name = "user_Id")
+    private Long userId;
 
     @Column(name = "submission_date")
     private Date date;
@@ -40,18 +38,15 @@ public class Submission extends EventComponent {
     public Long getId() {
         return this.getId();
     }
-    public UUID getEventUuid() {
-        return getEventUuid();
+    public Long getEventId() { return getEventId(); }
+    public void setEventId(Long eventId) {
+        this.setEventId(eventId);
     }
-
-    public void setEventUuid(UUID eventUuid) {
-        this.setEventUuid(eventUuid);
+    public void setUserId(Long userId){
+        this.userId = userId;
     }
-    public void setUserUuid(UUID userUuid){
-        this.userUuid = userUuid;
-    }
-    public UUID getUserUuid(){
-        return userUuid;
+    public Long getUserId(){
+        return userId;
     }
     public void setDate(Date date){
         this.date = date;

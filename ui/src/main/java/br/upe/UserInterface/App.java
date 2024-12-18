@@ -1,8 +1,8 @@
-//package br.upe.UserInterface;
+package br.upe.UserInterface;
 
-//public class App {
-//    public static void main(String[] args) {
-//       MainMenu mainMenu = new MainMenu();
-//        mainMenu.displayStartMenu();
-//    }
-//}
+public class App {
+    public static void main(String[] args) {
+        MainMenu mainMenu = new MainMenu();
+        mainMenu.displayMenu();
+    }
+}

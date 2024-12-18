@@ -14,7 +14,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "sessions")
-public class Session extends EventComponent {
+public class Session extends GreatEvent {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

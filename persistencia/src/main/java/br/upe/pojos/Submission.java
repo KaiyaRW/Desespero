@@ -13,7 +13,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "submissions")
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)  // Optional for single table inheritance
-public class Submission extends EventComponent {
+public class Submission extends GreatEvent {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -1,7 +1,6 @@
 package br.upe.pojos;
 
 import java.util.Collection;
-import java.util.UUID;
 
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;
@@ -12,7 +11,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "common_users")
 @Inheritance(strategy = InheritanceType.JOINED)  // Optional for single table inheritance
-public class CommomUser extends User {
+public class CommonUser extends User {
 
     protected final boolean isAdmin = false;
 

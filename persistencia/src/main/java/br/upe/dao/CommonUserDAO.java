@@ -7,7 +7,6 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
 import br.upe.pojos.CommonUser;
-import br.upe.pojos.Submission;
 
 public class CommonUserDAO extends GenericDAO<CommonUser> {
 

@@ -59,15 +59,18 @@
       <version>2.2</version>
     </dependency>
     <dependency>
-      <groupId>org.hibernate</groupId>
-      <artifactId>hibernate-core</artifactId>
-      <version>5.4.30.Final</version>
-    </dependency>
+    <groupId>org.hibernate</groupId>
+    <artifactId>hibernate-core</artifactId>
+    <version>5.6.12.Final</version> </dependency>
     <dependency>
       <groupId>mysql</groupId>
       <artifactId>mysql-connector-java</artifactId>
       <version>8.0.23</version>
     </dependency>
+    <dependency>
+      <groupId>org.postgresql</groupId>
+      <artifactId>postgresql</artifactId>
+      <version>42.5.1</version> </dependency>
   </dependencies>
       
   
@@ -228,9 +231,6 @@
     <module>persistencia</module>
 
     <module>controllers</module>
-
-    <module>ui</module>
-          
     
     <module>ui</module>
       

@@ -226,9 +226,6 @@
             
     
     <module>persistencia</module>
-            
-    
-    <module>controllers</module>
           
     
     <module>ui</module>

@@ -4,6 +4,7 @@ import br.upe.pojos.AdminUser;
 import br.upe.pojos.GreatEvent;
 
 import java.util.Collection;
+import java.util.Collections;
 
 public class AdminUserController {
     private AdminUser currentAdminUser;
@@ -17,7 +18,7 @@ public class AdminUserController {
     }
 
     public Collection<GreatEvent> getEvents() {
-        return currentAdminUser != null ? currentAdminUser.getEvents() : null;
+        return currentAdminUser != null ? currentAdminUser.getEvents() : Collections.emptyList(); // Retorna vazio
     }
 
     public void addEvent(GreatEvent event) {

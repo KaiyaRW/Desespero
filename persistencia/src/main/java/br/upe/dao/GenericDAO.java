@@ -1,20 +1,17 @@
 package br.upe.dao;
 
-import java.io.Serializable;
 import java.util.List;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
+import jakarta.persistence.EntityManager;
 
 public abstract class GenericDAO<T> {
 
     private Class<T> persistentClass;
+    protected EntityManager entityManager; // Agora inicializado via construtor
 
-    @PersistenceContext
-    protected EntityManager entityManager;
-
-    public GenericDAO(Class<T> persistentClass) {
+    public GenericDAO(Class<T> persistentClass, EntityManager entityManager) {
         this.persistentClass = persistentClass;
+        this.entityManager = entityManager; // Recebe a instância de EntityManager
     }
 
     public T findById(Long id) {
@@ -22,7 +19,7 @@ public abstract class GenericDAO<T> {
     }
 
     public List<T> findAll() {
-        return entityManager.createQuery("from " + persistentClass.getName()).getResultList();
+        return entityManager.createQuery("from " + persistentClass.getName(), persistentClass).getResultList();
     }
 
     public void save(T entity) {

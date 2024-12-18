@@ -1,8 +1,15 @@
 package br.upe.controllers;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.Persistence;
+
 import br.upe.dao.*;
 
 public class DAOController {
+    private static final String PERSISTENCE_UNIT_NAME = "default"; // Nome do persistence-unit
+    private final EntityManager entityManager;
+
     public final GreatEventDAO greatEventDAO;
     public final SessionDAO sessionDAO;
     public final SubmissionDAO submissionDAO;
@@ -11,12 +18,23 @@ public class DAOController {
     public final CommonUserDAO commonUserDAO;
 
     public DAOController() {
-        greatEventDAO = new GreatEventDAO();
-        sessionDAO = new SessionDAO();
-        submissionDAO = new SubmissionDAO();
-        subscriptionDAO = new SubscriptionDAO();
-        adminUserDAO = new AdminUserDAO();
-        commonUserDAO = new CommonUserDAO();
+        // Inicializa o EntityManagerFactory e cria o EntityManager
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT_NAME);
+        this.entityManager = emf.createEntityManager();
+
+        // Passa o EntityManager para os DAOs que precisam dele
+        this.greatEventDAO = new GreatEventDAO(entityManager);
+        this.sessionDAO = new SessionDAO(entityManager);
+        this.submissionDAO = new SubmissionDAO(entityManager);
+        this.subscriptionDAO = new SubscriptionDAO(entityManager);
+        this.adminUserDAO = new AdminUserDAO(entityManager);
+        this.commonUserDAO = new CommonUserDAO(entityManager);
     }
 
+    // Fecha o EntityManager quando o DAOController for descartado
+    public void close() {
+        if (entityManager.isOpen()) {
+            entityManager.close();
+        }
+    }
 }

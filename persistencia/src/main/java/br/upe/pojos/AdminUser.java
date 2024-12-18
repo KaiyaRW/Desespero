@@ -1,67 +1,48 @@
 package br.upe.pojos;
 
-import java.util.Collection;
+import java.util.ArrayList;
+import java.util.List;
 
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import jakarta.persistence.Entity;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "admin_users")
 public class AdminUser extends User {
 
     @OneToMany(mappedBy = "user")
-    private Collection<Subscription> subscriptions;
+    private List<Subscription> subscriptions = new ArrayList<>();
 
     @ManyToMany
-    @JoinColumn(name = "admin_uuid", nullable = false)  // Foreign key for AdminUser
-    private Collection<GreatEvent> events;
+    @JoinTable(name = "admin_events")
+    private List<GreatEvent> events = new ArrayList<>();
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
-    public String getEmail() {
-        return this.email;
-    }
-    public void setName(String name) {
-        this.name = name;
-    }
-    public String getName() {
-        return this.name;
-    }
-    public void setPassword(String password) {
-        this.password = password;
-    }
-    public String getPassword() {
-        return this.password;
-    }
-    public void setId(Long id) {
-        this.setId(id);
-    }
-    public Long getId() {
-        return this.getId();
-    }
-    public void addSubscription(Subscription subscription){
-        subscriptions.add(subscription);
-    }
+    public AdminUser() {}
 
-    public Collection<GreatEvent> getEvents(){
-        return events;
-    }
-    public Collection<Subscription> getSubscriptions() {
+    public List<Subscription> getSubscriptions() {
         return subscriptions;
     }
-    public void setSubscriptions(Collection<Subscription> subscriptions) {
+
+    public void setSubscriptions(List<Subscription> subscriptions) {
         this.subscriptions = subscriptions;
     }
 
-    public void setEvents(Collection<GreatEvent> events){this.events = events;}
-    public boolean isAdmin() {
-        return isAdmin;
+    public List<GreatEvent> getEvents() {
+        return events;
     }
 
-    public void addEvent(GreatEvent event) {this.events.add(event);}
+    public void setEvents(List<GreatEvent> events) {
+        this.events = events;
+    }
 
+    public void addSubscription(Subscription subscription) {
+        subscriptions.add(subscription);
+    }
+
+    public void addEvent(GreatEvent event) {
+        this.events.add(event);
+    }
 }

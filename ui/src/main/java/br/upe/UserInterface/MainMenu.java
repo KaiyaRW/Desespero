@@ -63,7 +63,7 @@ public class MainMenu {
         System.out.println("2. Criar Usuário Comum");
 
         int choice = getUserInputAsInt();
-        System.out.print("Nome completo: ");
+        System.out.print("Nome: ");
         String name = scanner.nextLine().trim();
         System.out.print("Email: ");
         String email = scanner.nextLine().trim();
@@ -72,10 +72,10 @@ public class MainMenu {
 
         try {
             if (choice == 1) {
-                facadeController.createAdminUser(name, "", "", email, password);
+                facadeController.createAdminUser(name, email, password);
                 System.out.println("Administrador criado com sucesso.");
             } else if (choice == 2) {
-                facadeController.createCommonUser(name, "", "", email, password);
+                facadeController.createCommonUser(name, email, password);
                 System.out.println("Usuário comum criado com sucesso.");
             } else {
                 System.out.println("Opção inválida.");
@@ -156,6 +156,7 @@ public class MainMenu {
 
         System.out.print("Digite o ID do evento para se inscrever: ");
         Long eventId = scanner.nextLong();
+        scanner.nextLine(); // Consumir a nova linha deixada pelo nextLong()
 
         try {
             facadeController.subscribeToEvent(eventId);

@@ -5,7 +5,6 @@ import br.upe.pojos.*;
 
 import java.util.Collection;
 import java.util.Date;
-import java.util.List;
 import java.util.Optional;
 
 /**
@@ -24,8 +23,7 @@ public class FacadeController {
     public FacadeController() {
         // Inicialização dos controladores e dependências.
         this.stateController = new StateController();
-        this.authController = new AuthController(
-                stateController, new DAOController().adminUserDAO, new DAOController().commonUserDAO);
+        this.authController = new AuthController(stateController, new DAOController().adminUserDAO, new DAOController().commonUserDAO);
         this.adminUserController = new AdminUserController();
         this.commonUserController = new CommonUserController();
         this.greatEventController = new GreatEventController();
@@ -60,12 +58,12 @@ public class FacadeController {
 
     // ------------------------ USUÁRIOS ------------------------
 
-    public void createAdminUser(String name, String surname, String cpf, String email, String password) throws Exception {
-        authController.createNewAdmin(name, surname, cpf, email, password);
+    public void createAdminUser(String name, String email, String password) throws Exception {
+        authController.createNewAdmin(name, email, password);
     }
 
-    public void createCommonUser(String name, String surname, String cpf, String email, String password) throws Exception {
-        authController.createNewUser(name, surname, cpf, email, password);
+    public void createCommonUser(String name, String email, String password) throws Exception {
+        authController.createNewUser(name, email, password);
     }
 
     public User getCurrentUser() {
@@ -87,7 +85,7 @@ public class FacadeController {
     }
 
     public Collection<GreatEvent> getAvailableEvents() {
-        return adminUserController.getEvents(); // Admin também acessa eventos (possa haver DAO específico).
+        return adminUserController.getEvents(); // Admin também acessa eventos (pode haver DAO específico).
     }
 
     // ------------------------ GERENCIAR INSCRIÇÕES ------------------------
@@ -101,9 +99,16 @@ public class FacadeController {
             throw new Exception("Usuário precisa estar autenticado.");
         }
 
+        // Primeiro, tenta encontrar o evento dentro dos eventos administrados
         Optional<GreatEvent> event = adminUserController.getEvents().stream()
                 .filter(e -> e.getId().equals(eventId))
                 .findFirst();
+
+        // Se não encontrar, busca diretamente pelo DAO
+        if (event.isEmpty()) {
+            DAOController daoController = new DAOController();
+            event = Optional.ofNullable(daoController.greatEventDAO.findById(eventId));
+        }
 
         if (event.isPresent()) {
             Subscription subscription = new Subscription();

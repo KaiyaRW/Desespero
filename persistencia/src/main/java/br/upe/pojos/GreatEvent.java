@@ -1,16 +1,17 @@
 package br.upe.pojos;
 
-import java.util.Collection;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "great_events")
@@ -19,73 +20,81 @@ public class GreatEvent {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private Long id;  // Use Long instead of UUID for database ID
+    private Long id;
 
-    @Column(name = "descritor")
+    @Column(name = "descritor", nullable = false)
     private String descritor;
 
-    @Column(name = "director")
+    @Column(name = "director", nullable = false)
     private String director;
 
-    @Column(name = "start_date")
+    @Column(name = "start_date", nullable = false)
     private Date startDate;
 
-    @Column(name = "end_date")
+    @Column(name = "end_date", nullable = false)
     private Date endDate;
 
-    @OneToMany(mappedBy = "greatEvent", cascade = CascadeType.ALL)  // OneToMany with cascade
-    private Collection<Session> sessions;
+    @OneToMany(mappedBy = "greatEvent", cascade = CascadeType.ALL)
+    private List<Session> sessions = new ArrayList<>();
 
-    @OneToMany(mappedBy = "greatEvent", cascade = CascadeType.ALL)  // OneToMany with cascade
-    private Collection<Submission> submissions;
+    @OneToMany(mappedBy = "greatEvent", cascade = CascadeType.ALL)
+    private List<Submission> submissions = new ArrayList<>();
 
+    public GreatEvent() {}
 
-    public Collection<Submission> getSubmissions() {
-        return submissions;
+    public Long getId() {
+        return id;
     }
-    public void setSubmissions(Collection<Submission> submissions) {
-        this.submissions = submissions;
-    }
-    public void addSubmission(Submission submission) {
-        this.submissions.add(submission);
-    }
-    public void setDescritor(String descritor) {
-        this.descritor = descritor;
-    }
-    public void setDirector(String director) {
-        this.director = director;
-    }
-    public void setStartDate(Date startDate) {
-        this.startDate = startDate;
-    }
-    public void setEndDate(Date endDate) {
-        this.endDate = endDate;
-    }
-    public String getDescritor() {
-        return this.descritor;
-    }
-    public String getDirector() {
-        return this.director;
-    }
-    public Date getStartDate() {
-        return this.startDate;
-    }
-    public Date getEndDate() {
-        return this.endDate;
-    }
+
     public void setId(Long id) {
         this.id = id;
     }
-    public Long getId() {
-        return this.id;
+
+    public String getDescritor() {
+        return descritor;
     }
-    public Collection<Session> getSessions(){
-        return this.sessions;
+
+    public void setDescritor(String descritor) {
+        this.descritor = descritor;
     }
-    public void setSessions(Collection<Session> sessions){
+
+    public String getDirector() {
+        return director;
+    }
+
+    public void setDirector(String director) {
+        this.director = director;
+    }
+
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
+    }
+
+    public List<Session> getSessions() {
+        return sessions;
+    }
+
+    public void setSessions(List<Session> sessions) {
         this.sessions = sessions;
     }
-    public void addSession(Session session){
-        this.sessions.add(session);
+
+    public List<Submission> getSubmissions() {
+        return submissions;
+    }
+
+    public void setSubmissions(List<Submission> submissions) {
+        this.submissions = submissions;
     }
 }

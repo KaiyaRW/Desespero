@@ -2,12 +2,12 @@ package br.upe.pojos;
 
 import java.util.Date;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "subscriptions")
@@ -16,23 +16,24 @@ public class Subscription {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private Long id;  // Use Long instead of UUID for database ID
+    private Long id;
 
-    @Column(name = "user_id")
+    @Column(name = "user_id", nullable = false)
     private Long userId;
 
-    @Column(name = "event_id") // Novo campo para armazenar o ID do evento
+    @Column(name = "event_id", nullable = false)
     private Long eventId;
 
-    @Column(name = "session_id")
+    @Column(name = "session_id", nullable = false)
     private Long sessionId;
 
-    @Column(name = "subscription_date")
+    @Column(name = "subscription_date", nullable = false)
     private Date date;
 
-    // Getters e Setters
+    public Subscription() {}
+
     public Long getId() {
-        return this.id;
+        return id;
     }
 
     public void setId(Long id) {
@@ -64,7 +65,7 @@ public class Subscription {
     }
 
     public Date getDate() {
-        return this.date;
+        return date;
     }
 
     public void setDate(Date date) {

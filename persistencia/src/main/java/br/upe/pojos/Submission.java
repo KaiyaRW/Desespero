@@ -1,57 +1,52 @@
 package br.upe.pojos;
 
 import java.util.Date;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
-import javax.persistence.Table;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "submissions")
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)  // Optional for single table inheritance
-public class Submission extends GreatEvent {
+public class Submission {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private Long id;  // Use Long instead of UUID for database ID
+    private Long id;
 
-    @Column(name = "user_Id")
+    @Column(name = "user_id", nullable = false)
     private Long userId;
 
-    @Column(name = "submission_date")
+    @Column(name = "submission_date", nullable = false)
     private Date date;
 
-    public void setDescritor(String descritor) {
-        this.setDescritor(descritor);
-    }
-    public String getDescritor(){
-        return this.getDescritor();
-    }
-    public void setId(Long id) {
-        this.setId(this.id);
-    }
+    public Submission() {}
+
     public Long getId() {
-        return this.getId();
+        return id;
     }
-    public Long getEventId() { return getEventId(); }
-    public void setEventId(Long eventId) {
-        this.setEventId(eventId);
+
+    public void setId(Long id) {
+        this.id = id;
     }
-    public void setUserId(Long userId){
-        this.userId = userId;
-    }
-    public Long getUserId(){
+
+    public Long getUserId() {
         return userId;
     }
-    public void setDate(Date date){
-        this.date = date;
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
-    public Date getDate(){
-        return this.date;
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
     }
 }

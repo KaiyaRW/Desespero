@@ -1,22 +1,19 @@
 package br.upe.dao;
 
+import br.upe.pojos.GreatEvent;
+
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.TypedQuery;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
-
-import br.upe.pojos.GreatEvent;
-
 public class GreatEventDAO extends GenericDAO<GreatEvent> {
-    public GreatEventDAO() {
-        super(GreatEvent.class);
+
+    public GreatEventDAO(EntityManager entityManager) {
+        super(GreatEvent.class, entityManager);
     }
 
-    @PersistenceContext
-    private EntityManager entityManager;
-
+    // Métodos específicos usam o EntityManager herdado do GenericDAO
     public List<GreatEvent> findByDateRange(Date startDate, Date endDate) {
         String jpql = "SELECT ge FROM GreatEvent ge "
                 + "WHERE ge.startDate >= :startDate AND ge.endDate <= :endDate";
@@ -25,5 +22,4 @@ public class GreatEventDAO extends GenericDAO<GreatEvent> {
         query.setParameter("endDate", endDate);
         return query.getResultList();
     }
-
 }

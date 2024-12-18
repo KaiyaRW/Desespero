@@ -20,7 +20,7 @@ public class AuthController {
     /**
      * Cria um novo usuário comum.
      */
-    public void createNewUser(String name, String surname, String cpf, String email, String password) throws Exception {
+    public void createNewUser(String name, String email, String password) throws Exception {
         // Verifica se já existe um usuário ou admin com o mesmo e-mail
         CommonUser existingUser = commonUserDAO.findByEmail(email).stream().findFirst().orElse(null);
         AdminUser existingAdmin = adminUserDAO.findByEmail(email).stream().findFirst().orElse(null);
@@ -42,7 +42,7 @@ public class AuthController {
     /**
      * Cria um novo administrador.
      */
-    public void createNewAdmin(String name, String surname, String cpf, String email, String password) throws Exception {
+    public void createNewAdmin(String name, String email, String password) throws Exception {
         // Verifica se já existe um usuário ou admin com o mesmo e-mail
         CommonUser existingUser = commonUserDAO.findByEmail(email).stream().findFirst().orElse(null);
         AdminUser existingAdmin = adminUserDAO.findByEmail(email).stream().findFirst().orElse(null);

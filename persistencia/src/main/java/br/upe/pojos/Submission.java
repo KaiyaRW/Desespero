@@ -24,6 +24,15 @@ public class Submission {
     @Column(name = "submission_date", nullable = false)
     private Date date;
 
+    @Column(name = "event_id", nullable = false)
+    private Long eventId;
+
+    @Column(name = "titulo", nullable = false)
+    private String titulo;
+
+    @Column(name = "link", nullable = false)
+    private String link;
+
     public Submission() {}
 
     public Long getId() {
@@ -42,11 +51,26 @@ public class Submission {
         this.userId = userId;
     }
 
-    public Date getDate() {
-        return date;
+    public void setEventId(Long eventId) {
+        this.eventId = eventId;
+    }
+    public Long getEventId(){
+        return eventId;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
+    public String getLink() {
+        return link;
+    }
+
+    public void setLink(String link) {
+        this.link = link;
+    }
+
+    public String getTitulo() {
+        return titulo;
+    }
+
+    public void setTitulo(String titulo) {
+        this.titulo = titulo;
     }
 }

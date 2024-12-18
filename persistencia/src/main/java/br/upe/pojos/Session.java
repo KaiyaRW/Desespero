@@ -1,17 +1,8 @@
 package br.upe.pojos;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import jakarta.persistence.*;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import java.util.Date;
 
 @Entity
 @Table(name = "sessions")
@@ -19,8 +10,14 @@ public class Session {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
     private Long id;
+
+    @Column(name = "descritor", nullable = false)
+    private String descritor;
+
+    @ManyToOne // Relacionamento Many-To-One com GreatEvent
+    @JoinColumn(name = "great_event_id", nullable = false) // Nome da FK na tabela "session"
+    private GreatEvent greatEvent;
 
     @Column(name = "start_date", nullable = false)
     private Date startDate;
@@ -28,17 +25,29 @@ public class Session {
     @Column(name = "end_date", nullable = false)
     private Date endDate;
 
-    @OneToMany(mappedBy = "session", cascade = CascadeType.ALL)
-    private List<Subscription> subscriptions = new ArrayList<>();
-
-    public Session() {}
-
+    // Getters e Setters
     public Long getId() {
         return id;
     }
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getDescritor() {
+        return descritor;
+    }
+
+    public void setDescritor(String descritor) {
+        this.descritor = descritor;
+    }
+
+    public GreatEvent getGreatEvent() {
+        return greatEvent;
+    }
+
+    public void setGreatEvent(GreatEvent greatEvent) {
+        this.greatEvent = greatEvent;
     }
 
     public Date getStartDate() {
@@ -55,17 +64,5 @@ public class Session {
 
     public void setEndDate(Date endDate) {
         this.endDate = endDate;
-    }
-
-    public List<Subscription> getSubscriptions() {
-        return subscriptions;
-    }
-
-    public void setSubscriptions(List<Subscription> subscriptions) {
-        this.subscriptions = subscriptions;
-    }
-
-    public void addSubscription(Subscription subscription) {
-        this.subscriptions.add(subscription);
     }
 }

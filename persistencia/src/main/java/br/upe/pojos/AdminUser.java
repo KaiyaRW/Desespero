@@ -20,6 +20,11 @@ public class AdminUser extends User {
     @JoinTable(name = "admin_events")
     private List<GreatEvent> events = new ArrayList<>();
 
+    @ManyToMany
+    @JoinTable(name = "admin_submissions")
+    private List<GreatEvent> submissions = new ArrayList<>();
+
+
     public AdminUser() {}
 
     public List<Subscription> getSubscriptions() {
@@ -36,13 +41,5 @@ public class AdminUser extends User {
 
     public void setEvents(List<GreatEvent> events) {
         this.events = events;
-    }
-
-    public void addSubscription(Subscription subscription) {
-        subscriptions.add(subscription);
-    }
-
-    public void addEvent(GreatEvent event) {
-        this.events.add(event);
     }
 }

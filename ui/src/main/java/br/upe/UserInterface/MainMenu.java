@@ -1,6 +1,5 @@
 package br.upe.UserInterface;
 
-import br.upe.facade.FacadeController;
 import br.upe.pojos.GreatEvent;
 import br.upe.pojos.Subscription;
 import br.upe.pojos.User;
@@ -138,7 +137,7 @@ public class MainMenu {
     }
 
     private void listAdminEvents() {
-        Collection<GreatEvent> events = facadeController.getAdminEvents();
+        Collection<GreatEvent> events = facadeController.getAvailableEvents();
         System.out.println("\n--- Meus Eventos ---");
         events.forEach(event -> System.out.printf("ID: %d - Nome: %s\n", event.getId(), event.getDescritor()));
     }

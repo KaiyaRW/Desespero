@@ -22,6 +22,9 @@ public class GreatEvent {
     @Column(name = "id")
     private Long id;
 
+    @Column(name = "titulo", nullable = false) // Novo atributo
+    private String titulo;
+
     @Column(name = "descritor", nullable = false)
     private String descritor;
 
@@ -48,6 +51,14 @@ public class GreatEvent {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getTitulo() { // Getter para titulo
+        return titulo;
+    }
+
+    public void setTitulo(String titulo) { // Setter para titulo
+        this.titulo = titulo;
     }
 
     public String getDescritor() {

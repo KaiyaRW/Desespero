@@ -23,8 +23,4 @@ public class CommonUser extends User {
     public void setSubscriptions(List<Subscription> subscriptions) {
         this.subscriptions = subscriptions;
     }
-
-    public void addSubscription(Subscription subscription) {
-        subscriptions.add(subscription);
-    }
 }

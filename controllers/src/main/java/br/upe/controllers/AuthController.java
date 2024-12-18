@@ -17,9 +17,6 @@ public class AuthController {
         this.commonUserDAO = commonUserDAO;
     }
 
-    /**
-     * Cria um novo usuário comum.
-     */
     public void createNewUser(String name, String email, String password) throws Exception {
         // Verifica se já existe um usuário ou admin com o mesmo e-mail
         CommonUser existingUser = commonUserDAO.findByEmail(email).stream().findFirst().orElse(null);
@@ -39,9 +36,6 @@ public class AuthController {
         commonUserDAO.save(newUser);
     }
 
-    /**
-     * Cria um novo administrador.
-     */
     public void createNewAdmin(String name, String email, String password) throws Exception {
         // Verifica se já existe um usuário ou admin com o mesmo e-mail
         CommonUser existingUser = commonUserDAO.findByEmail(email).stream().findFirst().orElse(null);
@@ -61,9 +55,6 @@ public class AuthController {
         adminUserDAO.save(newAdmin);
     }
 
-    /**
-     * Realiza o login de um usuário ou administrador.
-     */
     public void login(String email, String password) throws Exception {
         User user = null;
 
@@ -95,9 +86,6 @@ public class AuthController {
         stateController.setCurrentUser(user);
     }
 
-    /**
-     * Realiza o logout do sistema.
-     */
     public void logout() {
         stateController.setCurrentUser(null);
     }

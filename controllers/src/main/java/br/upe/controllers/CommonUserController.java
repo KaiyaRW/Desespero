@@ -1,32 +1,97 @@
 package br.upe.controllers;
 
+import br.upe.dao.CommonUserDAO;
 import br.upe.pojos.CommonUser;
-import br.upe.pojos.Subscription;
-
-import java.util.Collection;
+import jakarta.persistence.EntityManager;
 
 public class CommonUserController {
-    private CommonUser currentCommonUser;
+    private final CommonUserDAO commonUserDAO;
+    private final EntityManager entityManager;
 
-    public CommonUser getCurrentCommonUser() {
-        return currentCommonUser;
+    public CommonUserController(EntityManager entityManager) {
+        this.entityManager = entityManager;
+        this.commonUserDAO = new CommonUserDAO(entityManager);
     }
 
-    public void setCurrentCommonUser(CommonUser commonUser) {
-        this.currentCommonUser = commonUser;
-    }
-
-    public Collection<Subscription> getSubscriptions() {
-        return currentCommonUser != null ? currentCommonUser.getSubscriptions() : null;
-    }
-
-    public void addSubscription(Subscription subscription) {
-        if (currentCommonUser != null) {
-            currentCommonUser.addSubscription(subscription);
+    /**
+     * Atualiza o nome do usuário.
+     * @param userId ID do usuário.
+     * @param newName Novo nome a ser atribuído.
+     */
+    public void updateUserName(Long userId, String newName) {
+        entityManager.getTransaction().begin();
+        try {
+            CommonUser user = commonUserDAO.findById(userId);
+            if (user == null) {
+                throw new IllegalArgumentException("Usuário não encontrado.");
+            }
+            user.setName(newName);
+            commonUserDAO.update(user); // Atualiza o usuário no banco
+            entityManager.getTransaction().commit();
+        } catch (Exception e) {
+            entityManager.getTransaction().rollback();
+            throw e;
         }
     }
 
-    public boolean isAdmin() {
-        return false;
+    /**
+     * Atualiza o email do usuário.
+     * @param userId ID do usuário.
+     * @param newEmail Novo email a ser atribuído.
+     */
+    public void updateUserEmail(Long userId, String newEmail) {
+        entityManager.getTransaction().begin();
+        try {
+            CommonUser user = commonUserDAO.findById(userId);
+            if (user == null) {
+                throw new IllegalArgumentException("Usuário não encontrado.");
+            }
+            user.setEmail(newEmail);
+            commonUserDAO.update(user); // Atualiza o usuário no banco
+            entityManager.getTransaction().commit();
+        } catch (Exception e) {
+            entityManager.getTransaction().rollback();
+            throw e;
+        }
+    }
+
+    /**
+     * Atualiza a senha do usuário.
+     * @param userId ID do usuário.
+     * @param newPassword Nova senha a ser atribuída.
+     */
+    public void updateUserPassword(Long userId, String newPassword) {
+        entityManager.getTransaction().begin();
+        try {
+            CommonUser user = commonUserDAO.findById(userId);
+            if (user == null) {
+                throw new IllegalArgumentException("Usuário não encontrado.");
+            }
+            user.setPassword(newPassword);
+            commonUserDAO.update(user); // Atualiza o usuário no banco
+            entityManager.getTransaction().commit();
+        } catch (Exception e) {
+            entityManager.getTransaction().rollback();
+            throw e;
+        }
+    }
+
+    /**
+     * Remove o usuário pelo ID.
+     * @param userId ID do usuário a ser removido.
+     */
+    public void deleteUser(Long userId) {
+        entityManager.getTransaction().begin();
+        try {
+            CommonUser user = commonUserDAO.findById(userId);
+            if (user == null) {
+                throw new IllegalArgumentException("Usuário não encontrado.");
+            }
+            commonUserDAO.delete(user); // Remove o usuário do banco
+            entityManager.getTransaction().commit();
+        } catch (Exception e) {
+            entityManager.getTransaction().rollback();
+            throw e;
+        }
     }
 }

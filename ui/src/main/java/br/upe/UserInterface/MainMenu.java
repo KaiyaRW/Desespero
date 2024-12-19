@@ -1,6 +1,7 @@
 package br.upe.UserInterface;
 
 import br.upe.facade.Facade;
+import br.upe.pojos.Event;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -116,14 +117,27 @@ public class MainMenu {
 
     private void subscribeToEvent() {
         try {
-            facade.getSubscriptionController().getAllEventSubscriptions()
-                    .forEach(subscription -> System.out.println("Evento: " + subscription.getEventId())); // Exemplo para listar
+            // Listando os eventos disponíveis
+            facade.getGreatEventController().getAllEvents()
+                    .forEach(event -> System.out.println("Evento: " + event.getTitulo() + " [ID: " + event.getId() + "]"));
 
             System.out.print("Digite o ID do evento desejado: ");
             Long eventId = scanner.nextLong();
 
-            facade.getSubscriptionController().subscribeToEvent(facade.getStateController().getCurrentUser().getId(), eventId);
-            System.out.println("Inscrição realizada com sucesso.");
+            // Buscando o evento pelo ID
+            Event selectedEvent = facade.getGreatEventController().getAllEvents()
+                    .stream()
+                    .filter(event -> event.getId().equals(eventId))
+                    .findFirst()
+                    .orElseThrow(() -> new IllegalArgumentException("Evento não encontrado."));
+
+            // Realizando a inscrição
+            facade.getSubscriptionController().subscribeToEvent(
+                    facade.getStateController().getCurrentUser(),
+                    selectedEvent
+            );
+
+            System.out.println("Inscrição realizada com sucesso para o evento: " + selectedEvent.getTitulo());
         } catch (Exception e) {
             System.out.println("Erro: " + e.getMessage());
         }
@@ -132,7 +146,7 @@ public class MainMenu {
     private void viewUserSubscriptions() {
         // Exemplo para visualização das inscrições:
         facade.getSubscriptionController().getAllEventSubscriptions()
-                .forEach(subscription -> System.out.println("Evento inscrito: " + subscription.getEventId()));
+                .forEach(subscription -> System.out.println("Evento inscrito: " + subscription.getEvent()));
     }
 
     private void updatePassword() {

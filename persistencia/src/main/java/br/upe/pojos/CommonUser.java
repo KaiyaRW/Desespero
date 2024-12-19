@@ -3,12 +3,13 @@ package br.upe.pojos;
 import java.util.ArrayList;
 import java.util.List;
 
+import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "common_users")
+@DiscriminatorValue("COMMON")
 public class CommonUser extends User {
 
     @OneToMany(mappedBy = "user")

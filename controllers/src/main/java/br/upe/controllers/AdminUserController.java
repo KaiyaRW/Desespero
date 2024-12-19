@@ -2,7 +2,7 @@ package br.upe.controllers;
 
 import br.upe.dao.AdminUserDAO;
 import br.upe.pojos.AdminUser;
-import br.upe.pojos.GreatEvent;
+import br.upe.pojos.Event;
 
 import jakarta.persistence.EntityManager;
 
@@ -109,7 +109,7 @@ public class AdminUserController {
      * @param adminUserId ID do administrador.
      * @return Lista de eventos associados ao administrador.
      */
-    public List<GreatEvent> listAdminEvents(Long adminUserId) {
+    public List<Event> listAdminEvents(Long adminUserId) {
         try {
             AdminUser adminUser = adminUserDAO.findById(adminUserId);
             if (adminUser == null) {

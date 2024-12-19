@@ -2,12 +2,7 @@ package br.upe.pojos;
 
 import java.util.Date;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "submissions")
@@ -18,14 +13,16 @@ public class Submission {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "user_id", nullable = false)
-    private Long userId;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @Column(name = "submission_date", nullable = false)
     private Date date;
 
-    @Column(name = "event_id", nullable = false)
-    private Long eventId;
+    @ManyToOne
+    @JoinColumn(name = "event_id", nullable = false) // Define o relacionamento com 'event'
+    private Event event;
 
     @Column(name = "titulo", nullable = false)
     private String titulo;
@@ -43,27 +40,28 @@ public class Submission {
         this.id = id;
     }
 
-    public Long getUserId() {
-        return userId;
+    public User getUser() {
+        return user;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public void setUser(User user) {
+        this.user = user;
     }
 
-    public void setEventId(Long eventId) {
-        this.eventId = eventId;
-    }
-    public Long getEventId(){
-        return eventId;
+    public Date getDate() {
+        return date;
     }
 
-    public String getLink() {
-        return link;
+    public void setDate(Date date) {
+        this.date = date;
     }
 
-    public void setLink(String link) {
-        this.link = link;
+    public Event getEvent() { // Nome ajustado para 'Event'
+        return event;
+    }
+
+    public void setEvent(Event event) { // Nome ajustado para 'Event'
+        this.event = event;
     }
 
     public String getTitulo() {
@@ -72,5 +70,13 @@ public class Submission {
 
     public void setTitulo(String titulo) {
         this.titulo = titulo;
+    }
+
+    public String getLink() {
+        return link;
+    }
+
+    public void setLink(String link) {
+        this.link = link;
     }
 }

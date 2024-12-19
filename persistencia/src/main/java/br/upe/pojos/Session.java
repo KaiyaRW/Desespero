@@ -1,7 +1,6 @@
 package br.upe.pojos;
 
 import jakarta.persistence.*;
-
 import java.util.Date;
 
 @Entity
@@ -10,20 +9,23 @@ public class Session {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
 
     @Column(name = "descritor", nullable = false)
     private String descritor;
 
-    @ManyToOne // Relacionamento Many-To-One com GreatEvent
-    @JoinColumn(name = "great_event_id", nullable = false) // Nome da FK na tabela "session"
-    private GreatEvent greatEvent;
+    @ManyToOne
+    @JoinColumn(name = "event_id", nullable = false) // Define a chave estrangeira para a tabela de eventos
+    private Event event;
 
     @Column(name = "start_date", nullable = false)
     private Date startDate;
 
     @Column(name = "end_date", nullable = false)
     private Date endDate;
+
+    public Session() {}
 
     // Getters e Setters
     public Long getId() {
@@ -42,12 +44,12 @@ public class Session {
         this.descritor = descritor;
     }
 
-    public GreatEvent getGreatEvent() {
-        return greatEvent;
+    public Event getEvent() { // Nome ajustado para 'Event'
+        return event;
     }
 
-    public void setGreatEvent(GreatEvent greatEvent) {
-        this.greatEvent = greatEvent;
+    public void setEvent(Event event) { // Nome ajustado para 'Event'
+        this.event = event;
     }
 
     public Date getStartDate() {

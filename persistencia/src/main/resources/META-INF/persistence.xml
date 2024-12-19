@@ -2,27 +2,31 @@
              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
              xsi:schemaLocation="https://jakarta.ee/xml/ns/persistence https://jakarta.ee/xml/ns/persistence/persistence_3_0.xsd"
              version="3.0">
-    <persistence-unit name="default" transaction-type="RESOURCE_LOCAL">
-        <!-- Entidades -->
-        <class>br.upe.pojos.Submission</class>
+    <persistence-unit name="default">
         <class>br.upe.pojos.Subscription</class>
-        <class>br.upe.pojos.AdminUser</class>
-        <class>br.upe.pojos.CommonUser</class>
+        <class>br.upe.pojos.Event</class>
+        <class>br.upe.pojos.Session</class>
         <class>br.upe.pojos.User</class>
-        <class>br.upe.pojos.GreatEvent</class>
-
         <properties>
-            <!-- Configuração do Banco de Dados -->
-            <property name="jakarta.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
+            <!-- Conexão com o banco -->
             <property name="jakarta.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/teste1"/>
             <property name="jakarta.persistence.jdbc.user" value="root"/>
-            <property name="jakarta.persistence.jdbc.password" value="M30615215f-"/>
+            <property name="jakarta.persistence.jdbc.password" value="sua-senha"/>
+            <property name="jakarta.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
 
-            <!-- Hibernate Configurações -->
-            <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL8Dialect"/>
-            <property name="hibernate.hbm2ddl.auto" value="update"/> <!-- Atualiza o esquema automaticamente -->
-            <property name="hibernate.show_sql" value="true"/> <!-- Mostra as queries no console -->
-            <property name="hibernate.format_sql" value="true"/> <!-- Formata as queries -->
+            <!-- Dialeto (opcional, mas indicado para controle) -->
+            <property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect"/>
+
+            <!-- Provider de conexão HikariCP -->
+            <property name="hibernate.connection.provider_class" value="org.hibernate.hikaricp.internal.HikariCPConnectionProvider"/>
+            <property name="hibernate.hikari.maximumPoolSize" value="10"/>
+            <property name="hibernate.hikari.minimumIdle" value="2"/>
+
+            <!-- Configurações de criação de schema -->
+            <property name="hibernate.hbm2ddl.auto" value="update"/>
+
+            <!-- Log de SQL -->
+            <property name="hibernate.show_sql" value="true"/>
         </properties>
     </persistence-unit>
 </persistence>

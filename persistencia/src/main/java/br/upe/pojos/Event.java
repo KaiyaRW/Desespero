@@ -14,8 +14,8 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "great_events")
-public class GreatEvent {
+@Table(name = "events")
+public class Event {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,13 +37,13 @@ public class GreatEvent {
     @Column(name = "end_date", nullable = false)
     private Date endDate;
 
-    @OneToMany(mappedBy = "greatEvent", cascade = CascadeType.ALL)
-    private List<Session> sessions = new ArrayList<>();
-
-    @OneToMany(mappedBy = "greatEvent", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Submission> submissions = new ArrayList<>();
 
-    public GreatEvent() {}
+    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Session> sessions = new ArrayList<>();
+
+    public Event() {}
 
     public Long getId() {
         return id;
@@ -53,11 +53,11 @@ public class GreatEvent {
         this.id = id;
     }
 
-    public String getTitulo() { // Getter para titulo
+    public String getTitulo() {
         return titulo;
     }
 
-    public void setTitulo(String titulo) { // Setter para titulo
+    public void setTitulo(String titulo) {
         this.titulo = titulo;
     }
 
@@ -93,19 +93,19 @@ public class GreatEvent {
         this.endDate = endDate;
     }
 
-    public List<Session> getSessions() {
-        return sessions;
-    }
-
-    public void setSessions(List<Session> sessions) {
-        this.sessions = sessions;
-    }
-
     public List<Submission> getSubmissions() {
         return submissions;
     }
 
     public void setSubmissions(List<Submission> submissions) {
         this.submissions = submissions;
+    }
+
+    public List<Session> getSessions() {
+        return sessions;
+    }
+
+    public void setSessions(List<Session> sessions) {
+        this.sessions = sessions;
     }
 }

@@ -1,24 +1,21 @@
 package br.upe.pojos;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
-@Table(name = "users")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE) // Estratégia
+@DiscriminatorColumn(name = "user_type", discriminatorType = DiscriminatorType.STRING) // Coluna de discriminação
 public abstract class User {
 
     @Id
+    @Column(name = "id", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
     private Long id;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Subscription> subscriptions;
 
     @Column(name = "is_admin", nullable = false)
     protected boolean isAdmin;
@@ -32,11 +29,9 @@ public abstract class User {
     @Column(name = "email", nullable = false)
     private String email;
 
-    @OneToMany(mappedBy = "user")
-    private List<Subscription> subscriptions = new ArrayList<>();
-
     public User() {}
 
+    // Getters e Setters
     public Long getId() {
         return id;
     }

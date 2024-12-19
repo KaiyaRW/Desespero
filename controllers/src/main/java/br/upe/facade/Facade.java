@@ -6,7 +6,7 @@ import jakarta.persistence.EntityManager;
 public class Facade {
     private final AdminUserController adminUserController;
     private final CommonUserController commonUserController;
-    private final GreatEventController greatEventController;
+    private final EventController eventController;
     private final SessionController sessionController;
     private final SubscriptionController subscriptionController;
     private final SubmissionController submissionController;
@@ -23,7 +23,7 @@ public class Facade {
         this.stateController = new StateController();
         this.adminUserController = new AdminUserController(entityManager);
         this.commonUserController = new CommonUserController(entityManager);
-        this.greatEventController = new GreatEventController(entityManager);
+        this.eventController = new EventController(entityManager);
         this.sessionController = new SessionController(entityManager);
         this.subscriptionController = new SubscriptionController(entityManager);
         this.submissionController = new SubmissionController(entityManager);
@@ -46,8 +46,8 @@ public class Facade {
         return commonUserController;
     }
 
-    public GreatEventController getGreatEventController() {
-        return greatEventController;
+    public EventController getGreatEventController() {
+        return eventController;
     }
 
     public SessionController getSessionController() {

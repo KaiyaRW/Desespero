@@ -2,12 +2,7 @@ package br.upe.pojos;
 
 import java.util.Date;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "subscriptions")
@@ -18,20 +13,24 @@ public class Subscription {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "user_id", nullable = false)
-    private Long userId;
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false) // Relacionamento com User
+    private User user;
 
-    @Column(name = "event_id", nullable = false)
-    private Long eventId;
+    @ManyToOne
+    @JoinColumn(name = "event_id", nullable = false) // Relacionamento com Event
+    private Event event;
 
-    @Column(name = "session_id", nullable = false)
-    private Long sessionId;
+    @ManyToOne
+    @JoinColumn(name = "session_id") // Relacionamento com Session (opcional)
+    private Session session;
 
     @Column(name = "subscription_date", nullable = false)
     private Date date;
 
     public Subscription() {}
 
+    // Getters e setters
     public Long getId() {
         return id;
     }
@@ -40,28 +39,28 @@ public class Subscription {
         this.id = id;
     }
 
-    public Long getUserId() {
-        return userId;
+    public User getUser() {
+        return user;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public void setUser(User user) {
+        this.user = user;
     }
 
-    public Long getEventId() {
-        return eventId;
+    public Event getEvent() {
+        return event;
     }
 
-    public void setEventId(Long eventId) {
-        this.eventId = eventId;
+    public void setEvent(Event event) {
+        this.event = event;
     }
 
-    public Long getSessionId() {
-        return sessionId;
+    public Session getSession() {
+        return session;
     }
 
-    public void setSessionId(Long sessionId) {
-        this.sessionId = sessionId;
+    public void setSession(Session session) {
+        this.session = session;
     }
 
     public Date getDate() {

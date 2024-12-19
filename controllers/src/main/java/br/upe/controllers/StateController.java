@@ -4,15 +4,15 @@ import br.upe.pojos.*;
 
 public class StateController {
     public User currentUser;
-    public GreatEvent currentEvent;
+    public Event currentEvent;
     public Session currentSession;
     public Submission currentSubmission;
     public Subscription currentSubscription;
 
-    public GreatEvent getCurrentEvent() {
+    public Event getCurrentEvent() {
         return currentEvent;
     }
-    public void setCurrentEvent(GreatEvent currentEvent) {
+    public void setCurrentEvent(Event currentEvent) {
         this.currentEvent = currentEvent;
     }
     public Session getCurrentSession() {

@@ -3,14 +3,10 @@ package br.upe.pojos;
 import java.util.ArrayList;
 import java.util.List;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
-@Table(name = "admin_users")
+@DiscriminatorValue("ADMIN")
 public class AdminUser extends User {
 
     @OneToMany(mappedBy = "user")
@@ -18,11 +14,11 @@ public class AdminUser extends User {
 
     @ManyToMany
     @JoinTable(name = "admin_events")
-    private List<GreatEvent> events = new ArrayList<>();
+    private List<Event> events = new ArrayList<>();
 
     @ManyToMany
     @JoinTable(name = "admin_submissions")
-    private List<GreatEvent> submissions = new ArrayList<>();
+    private List<Event> submissions = new ArrayList<>();
 
 
     public AdminUser() {}
@@ -35,11 +31,11 @@ public class AdminUser extends User {
         this.subscriptions = subscriptions;
     }
 
-    public List<GreatEvent> getEvents() {
+    public List<Event> getEvents() {
         return events;
     }
 
-    public void setEvents(List<GreatEvent> events) {
+    public void setEvents(List<Event> events) {
         this.events = events;
     }
 }

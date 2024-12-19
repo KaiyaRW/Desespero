@@ -10,7 +10,7 @@ public class DAOController {
     private static final String PERSISTENCE_UNIT_NAME = "default"; // Nome do persistence-unit
     private final EntityManager entityManager;
 
-    public final GreatEventDAO greatEventDAO;
+    public final EventDAO eventDAO;
     public final SessionDAO sessionDAO;
     public final SubmissionDAO submissionDAO;
     public final SubscriptionDAO subscriptionDAO;
@@ -23,7 +23,7 @@ public class DAOController {
         this.entityManager = emf.createEntityManager();
 
         // Passa o EntityManager para os DAOs que precisam dele
-        this.greatEventDAO = new GreatEventDAO(entityManager);
+        this.eventDAO = new EventDAO(entityManager);
         this.sessionDAO = new SessionDAO(entityManager);
         this.submissionDAO = new SubmissionDAO(entityManager);
         this.subscriptionDAO = new SubscriptionDAO(entityManager);

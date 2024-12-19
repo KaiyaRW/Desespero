@@ -17,9 +17,6 @@ public abstract class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Subscription> subscriptions;
 
-    @Column(name = "is_admin", nullable = false)
-    protected boolean isAdmin;
-
     @Column(name = "name", nullable = false)
     private String name;
 
@@ -38,14 +35,6 @@ public abstract class User {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public boolean isAdmin() {
-        return isAdmin;
-    }
-
-    public void setAdmin(boolean admin) {
-        isAdmin = admin;
     }
 
     public String getName() {

@@ -46,7 +46,7 @@ public class Facade {
         return commonUserController;
     }
 
-    public EventController getGreatEventController() {
+    public EventController getEventController() {
         return eventController;
     }
 

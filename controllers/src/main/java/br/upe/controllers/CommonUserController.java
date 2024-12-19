@@ -3,6 +3,7 @@ package br.upe.controllers;
 import br.upe.dao.CommonUserDAO;
 import br.upe.pojos.CommonUser;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityTransaction;
 
 public class CommonUserController {
     private final CommonUserDAO commonUserDAO;
@@ -13,85 +14,64 @@ public class CommonUserController {
         this.commonUserDAO = new CommonUserDAO(entityManager);
     }
 
-    /**
-     * Atualiza o nome do usuário.
-     * @param userId ID do usuário.
-     * @param newName Novo nome a ser atribuído.
-     */
-    public void updateUserName(Long userId, String newName) {
-        entityManager.getTransaction().begin();
+    private void executeTransaction(Runnable action) {
+        EntityTransaction transaction = entityManager.getTransaction();
         try {
+            if (!transaction.isActive()) {
+                transaction.begin();
+            }
+            action.run();
+            if (transaction.isActive()) {
+                transaction.commit();
+            }
+        } catch (Exception e) {
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+            throw new RuntimeException("Erro durante execução de transação: " + e.getMessage(), e);
+        }
+    }
+
+    public void updateUserName(Long userId, String newName) {
+        executeTransaction(() -> {
             CommonUser user = commonUserDAO.findById(userId);
             if (user == null) {
                 throw new IllegalArgumentException("Usuário não encontrado.");
             }
             user.setName(newName);
-            commonUserDAO.update(user); // Atualiza o usuário no banco
-            entityManager.getTransaction().commit();
-        } catch (Exception e) {
-            entityManager.getTransaction().rollback();
-            throw e;
-        }
+            commonUserDAO.update(user);
+        });
     }
 
-    /**
-     * Atualiza o email do usuário.
-     * @param userId ID do usuário.
-     * @param newEmail Novo email a ser atribuído.
-     */
     public void updateUserEmail(Long userId, String newEmail) {
-        entityManager.getTransaction().begin();
-        try {
+        executeTransaction(() -> {
             CommonUser user = commonUserDAO.findById(userId);
             if (user == null) {
                 throw new IllegalArgumentException("Usuário não encontrado.");
             }
             user.setEmail(newEmail);
-            commonUserDAO.update(user); // Atualiza o usuário no banco
-            entityManager.getTransaction().commit();
-        } catch (Exception e) {
-            entityManager.getTransaction().rollback();
-            throw e;
-        }
+            commonUserDAO.update(user);
+        });
     }
 
-    /**
-     * Atualiza a senha do usuário.
-     * @param userId ID do usuário.
-     * @param newPassword Nova senha a ser atribuída.
-     */
     public void updateUserPassword(Long userId, String newPassword) {
-        entityManager.getTransaction().begin();
-        try {
+        executeTransaction(() -> {
             CommonUser user = commonUserDAO.findById(userId);
             if (user == null) {
                 throw new IllegalArgumentException("Usuário não encontrado.");
             }
             user.setPassword(newPassword);
-            commonUserDAO.update(user); // Atualiza o usuário no banco
-            entityManager.getTransaction().commit();
-        } catch (Exception e) {
-            entityManager.getTransaction().rollback();
-            throw e;
-        }
+            commonUserDAO.update(user);
+        });
     }
 
-    /**
-     * Remove o usuário pelo ID.
-     * @param userId ID do usuário a ser removido.
-     */
     public void deleteUser(Long userId) {
-        entityManager.getTransaction().begin();
-        try {
+        executeTransaction(() -> {
             CommonUser user = commonUserDAO.findById(userId);
             if (user == null) {
                 throw new IllegalArgumentException("Usuário não encontrado.");
             }
-            commonUserDAO.delete(user); // Remove o usuário do banco
-            entityManager.getTransaction().commit();
-        } catch (Exception e) {
-            entityManager.getTransaction().rollback();
-            throw e;
-        }
+            commonUserDAO.delete(user);
+        });
     }
 }

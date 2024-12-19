@@ -1,7 +1,7 @@
-<persistence xmlns="http://xmlns.jcp.org/xml/ns/persistence"
+<persistence xmlns="https://jakarta.ee/xml/ns/persistence"
              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-             xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd"
-             version="2.1">
+             xsi:schemaLocation="https://jakarta.ee/xml/ns/persistence https://jakarta.ee/xml/ns/persistence/persistence_3_0.xsd"
+             version="3.0">
     <persistence-unit name="default" transaction-type="RESOURCE_LOCAL">
         <!-- Entidades -->
         <class>br.upe.pojos.Submission</class>
@@ -13,10 +13,10 @@
 
         <properties>
             <!-- Configuração do Banco de Dados -->
-            <property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
-            <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/teste1"/>
-            <property name="javax.persistence.jdbc.user" value="root"/>
-            <property name="javax.persistence.jdbc.password" value="M30615215f-"/>
+            <property name="jakarta.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
+            <property name="jakarta.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/teste1"/>
+            <property name="jakarta.persistence.jdbc.user" value="root"/>
+            <property name="jakarta.persistence.jdbc.password" value="M30615215f-"/>
 
             <!-- Hibernate Configurações -->
             <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL8Dialect"/>

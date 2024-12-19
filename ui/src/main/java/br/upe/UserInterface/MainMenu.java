@@ -1,105 +1,93 @@
 package br.upe.UserInterface;
 
-import br.upe.pojos.GreatEvent;
-import br.upe.pojos.Subscription;
-import br.upe.pojos.User;
+import br.upe.facade.Facade;
 
-import java.util.Collection;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Scanner;
 
 public class MainMenu {
-    private final FacadeController facadeController = new FacadeController();
+    private final Facade facade;
     private final Scanner scanner = new Scanner(System.in);
 
-    public void displayMenu() {
+    public MainMenu(Facade facade) {
+        this.facade = facade;
+    }
+
+    public void displayStartMenu() {
         boolean running = true;
 
         while (running) {
-            System.out.println("\n--- MENU INICIAL ---");
+            System.out.println("App Menu");
             System.out.println("1. Login");
-            System.out.println("2. Criar usuário");
+            System.out.println("2. Criar novo Usuário");
             System.out.println("3. Sair");
 
-            int choice = getUserInputAsInt();
+            int choice = scanner.nextInt();
+            scanner.nextLine();
+
             switch (choice) {
-                case 1 -> login();
-                case 2 -> createUser();
-                case 3 -> {
-                    running = false;
-                    System.out.println("Encerrando o sistema. Até logo!");
-                }
-                default -> System.out.println("Opção inválida, tente novamente.");
+                case 1 -> displayLoginMenu();
+                case 2 -> displayCreateUserMenu();
+                case 3 -> running = false;
+                default -> System.out.println("Escolha inválida. Tente novamente.");
             }
         }
     }
 
-    private void login() {
-        System.out.print("Email: ");
+    private void displayLoginMenu() {
+        System.out.print("Digite seu e-mail: ");
         String email = scanner.nextLine().trim();
-        System.out.print("Senha: ");
+        System.out.print("Digite sua senha: ");
         String password = scanner.nextLine().trim();
 
         try {
-            facadeController.login(email, password);
-            User user = facadeController.getCurrentUser();
+            facade.getAuthController().login(email, password);
             System.out.println("Login realizado com sucesso!");
-
-            if (user.isAdmin()) {
-                displayAdminMenu();
-            } else {
-                displayUserMenu();
-            }
-
-            facadeController.logout(); // Logout automático ao sair do menu.
+            displayHomeMenu();
         } catch (Exception e) {
-            System.out.println("Erro no login: " + e.getMessage());
+            System.out.println("Erro: " + e.getMessage());
         }
     }
 
-    private void createUser() {
-        System.out.println("\n--- Criar Usuário ---");
+    private void displayHomeMenu() {
+        if (facade.getStateController().getCurrentUser().isAdmin()) {
+            displayAdminMenu();
+        } else {
+            displayUserMenu();
+        }
+        facade.getAuthController().logout();
+    }
+
+    private void displayCreateUserMenu() {
+        System.out.println("Menu de Criação de Usuário");
         System.out.println("1. Criar Administrador");
         System.out.println("2. Criar Usuário Comum");
+        System.out.print("Escolha uma opção: ");
 
-        int choice = getUserInputAsInt();
-        System.out.print("Nome: ");
-        String name = scanner.nextLine().trim();
-        System.out.print("Email: ");
-        String email = scanner.nextLine().trim();
-        System.out.print("Senha: ");
-        String password = scanner.nextLine().trim();
+        int choice = scanner.nextInt();
+        scanner.nextLine();
 
         try {
+            System.out.print("Digite o nome completo: ");
+            String name = scanner.nextLine().trim();
+            System.out.print("Digite o e-mail: ");
+            String email = scanner.nextLine().trim();
+            System.out.print("Digite a senha: ");
+            String password = scanner.nextLine().trim();
+
             if (choice == 1) {
-                facadeController.createAdminUser(name, email, password);
+                facade.getAuthController().createNewAdmin(name, email, password);
                 System.out.println("Administrador criado com sucesso.");
             } else if (choice == 2) {
-                facadeController.createCommonUser(name, email, password);
-                System.out.println("Usuário comum criado com sucesso.");
+                facade.getAuthController().createNewUser(name, email, password);
+                System.out.println("Usuário criado com sucesso.");
             } else {
                 System.out.println("Opção inválida.");
             }
         } catch (Exception e) {
-            System.out.println("Erro ao criar usuário: " + e.getMessage());
-        }
-    }
-
-    private void displayAdminMenu() {
-        boolean running = true;
-
-        while (running) {
-            System.out.println("\n--- MENU ADMINISTRADOR ---");
-            System.out.println("1. Criar Evento");
-            System.out.println("2. Listar Meus Eventos");
-            System.out.println("3. Logout");
-
-            int choice = getUserInputAsInt();
-            switch (choice) {
-                case 1 -> createEvent();
-                case 2 -> listAdminEvents();
-                case 3 -> running = false;
-                default -> System.out.println("Opção inválida.");
-            }
+            System.out.println("Erro: " + e.getMessage());
         }
     }
 
@@ -107,77 +95,120 @@ public class MainMenu {
         boolean running = true;
 
         while (running) {
-            System.out.println("\n--- MENU USUÁRIO COMUM ---");
-            System.out.println("1. Inscrever-se em Evento");
-            System.out.println("2. Minhas Inscrições");
-            System.out.println("3. Logout");
+            System.out.println("Menu do Usuário");
+            System.out.println("1. Inscrever-se em Eventos");
+            System.out.println("2. Visualizar Inscrições");
+            System.out.println("3. Atualizar Senha");
+            System.out.println("4. Sair");
 
-            int choice = getUserInputAsInt();
+            int choice = scanner.nextInt();
+            scanner.nextLine();
+
             switch (choice) {
                 case 1 -> subscribeToEvent();
-                case 2 -> listSubscriptions();
-                case 3 -> running = false;
-                default -> System.out.println("Opção inválida.");
+                case 2 -> viewUserSubscriptions();
+                case 3 -> updatePassword();
+                case 4 -> running = false;
+                default -> System.out.println("Escolha inválida. Tente novamente.");
+            }
+        }
+    }
+
+    private void subscribeToEvent() {
+        try {
+            facade.getSubscriptionController().getAllEventSubscriptions()
+                    .forEach(subscription -> System.out.println("Evento: " + subscription.getEventId())); // Exemplo para listar
+
+            System.out.print("Digite o ID do evento desejado: ");
+            Long eventId = scanner.nextLong();
+
+            facade.getSubscriptionController().subscribeToEvent(facade.getStateController().getCurrentUser().getId(), eventId);
+            System.out.println("Inscrição realizada com sucesso.");
+        } catch (Exception e) {
+            System.out.println("Erro: " + e.getMessage());
+        }
+    }
+
+    private void viewUserSubscriptions() {
+        // Exemplo para visualização das inscrições:
+        facade.getSubscriptionController().getAllEventSubscriptions()
+                .forEach(subscription -> System.out.println("Evento inscrito: " + subscription.getEventId()));
+    }
+
+    private void updatePassword() {
+        System.out.print("Digite a senha atual: ");
+        String currentPassword = scanner.nextLine().trim();
+
+        try {
+            if (currentPassword.equals(facade.getStateController().getCurrentUser().getPassword())) {
+                System.out.print("Digite a nova senha: ");
+                String newPassword = scanner.nextLine();
+                facade.getStateController().getCurrentUser().setPassword(newPassword);
+                System.out.println("Senha atualizada com sucesso.");
+            } else {
+                System.out.println("Senha atual incorreta.");
+            }
+        } catch (Exception e) {
+            System.out.println("Erro: " + e.getMessage());
+        }
+    }
+
+    private void displayAdminMenu() {
+        boolean running = true;
+
+        while (running) {
+            System.out.println("Menu Administrativo");
+            System.out.println("1. Criar Evento");
+            System.out.println("2. Listar Eventos");
+            System.out.println("3. Gerenciar Evento");
+            System.out.println("4. Atualizar Senha");
+            System.out.println("5. Sair");
+
+            int choice = scanner.nextInt();
+            scanner.nextLine();
+
+            switch (choice) {
+                case 1 -> createEvent();
+                case 2 -> listEvents();
+                case 3 -> manageEvent();
+                case 4 -> updatePassword();
+                case 5 -> running = false;
+                default -> System.out.println("Escolha inválida. Tente novamente.");
             }
         }
     }
 
     private void createEvent() {
-        System.out.print("Nome do evento: ");
-        String eventName = scanner.nextLine().trim();
-        System.out.print("Diretor do evento: ");
-        String director = scanner.nextLine().trim();
-
         try {
-            facadeController.createEvent(eventName, director);
-            System.out.println("Evento criado com sucesso!");
-        } catch (Exception e) {
-            System.out.println("Erro ao criar evento: " + e.getMessage());
+            System.out.print("Título: ");
+            String titulo = scanner.nextLine();
+            System.out.print("Descrição: ");
+            String descritor = scanner.nextLine();
+            System.out.print("Diretor: ");
+            String diretor = scanner.nextLine();
+            System.out.print("Data início (dd/MM/yyyy): ");
+            Date dataInicio = new SimpleDateFormat("dd/MM/yyyy").parse(scanner.nextLine());
+            System.out.print("Data fim (dd/MM/yyyy): ");
+            Date dataFim = new SimpleDateFormat("dd/MM/yyyy").parse(scanner.nextLine());
+
+            facade.getGreatEventController().createEvent(titulo, descritor, diretor, dataInicio, dataFim);
+            System.out.println("Evento criado com sucesso.");
+        } catch (ParseException e) {
+            System.out.println("Erro ao inserir datas.");
         }
     }
 
-    private void listAdminEvents() {
-        Collection<GreatEvent> events = facadeController.getAvailableEvents();
-        System.out.println("\n--- Meus Eventos ---");
-        events.forEach(event -> System.out.printf("ID: %d - Nome: %s\n", event.getId(), event.getDescritor()));
+    private void listEvents() {
+        facade.getGreatEventController().getAllEvents()
+                .forEach(event -> System.out.println("Evento: " + event.getTitulo() + " [ID: " + event.getId() + "]"));
     }
 
-    private void subscribeToEvent() {
-        Collection<GreatEvent> events = facadeController.getAvailableEvents();
-        System.out.println("\n--- Eventos Disponíveis ---");
-
-        if (events.isEmpty()) {
-            System.out.println("Nenhum evento disponível no momento.");
-            return;
-        }
-
-        events.forEach(event -> System.out.printf("ID: %d - Nome: %s\n", event.getId(), event.getDescritor()));
-
-        System.out.print("Digite o ID do evento para se inscrever: ");
+    private void manageEvent() {
+        System.out.print("Digite o ID do evento a ser gerenciado: ");
         Long eventId = scanner.nextLong();
-        scanner.nextLine(); // Consumir a nova linha deixada pelo nextLong()
+        scanner.nextLine(); // Consumir linha restante
 
-        try {
-            facadeController.subscribeToEvent(eventId);
-            System.out.println("Inscrição realizada com sucesso!");
-        } catch (Exception e) {
-            System.out.println("Erro ao inscrever-se: " + e.getMessage());
-        }
-    }
-
-    private void listSubscriptions() {
-        Collection<Subscription> subscriptions = facadeController.getUserSubscriptions();
-
-        System.out.println("\n--- Minhas Inscrições ---");
-        subscriptions.forEach(subscription -> System.out.printf("Evento ID: %d - Data: %s\n",
-                subscription.getEventId(), subscription.getDate()));
-    }
-
-    private int getUserInputAsInt() {
-        try {
-            return Integer.parseInt(scanner.nextLine().trim());
-        } catch (NumberFormatException e) {
-            return -1;
-        }
+        System.out.println("Gerenciando evento [ID " + eventId + "]");
+        System.out.println("Operações ainda não implementadas");
     }
 }

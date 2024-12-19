@@ -1,9 +1,8 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
 
+    <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>br.upe</groupId>
         <artifactId>PROJETO2</artifactId>
@@ -13,30 +12,11 @@
     <artifactId>controllers</artifactId>
     <packaging>jar</packaging>
 
-    <name>controllers</name>
-    <url>http://www.example.com</url>
-
     <dependencies>
-        <!-- Dependência para o módulo persistencia -->
         <dependency>
             <groupId>br.upe</groupId>
             <artifactId>persistencia</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
-
-        <!-- Dependências de Teste com JUnit 5 -->
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-api</artifactId>
-            <version>5.11.0-M2</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-engine</artifactId>
-            <version>5.11.0-M2</version>
-            <scope>test</scope>
-        </dependency>
     </dependencies>
-
 </project>

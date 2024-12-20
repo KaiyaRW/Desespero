@@ -2,29 +2,22 @@ package br.upe.UserInterface;
 
 import br.upe.facade.Facade;
 
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityManagerFactory;
-import jakarta.persistence.Persistence;
-
 public class App {
     public static void main(String[] args) {
-        // Inicializar o EntityManagerFactory usando a unidade de persistência definida no persistence.xml
-        EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("default");
+        // Instanciar o Facade (centraliza os controladores e DAOs)
+        Facade facade = new Facade();
 
-        // Criar o EntityManager a partir do EntityManagerFactory
-        EntityManager entityManager = entityManagerFactory.createEntityManager();
-
-        // Instanciar a fachada com o EntityManager
-        Facade facade = new Facade(entityManager);
-
-        // Instanciar o menu principal utilizando a fachada
+        // Instanciar o menu principal utilizando o Facade
         MainMenu mainMenu = new MainMenu(facade);
 
-        // Iniciar a execução do menu
-        mainMenu.displayStartMenu();
-
-        // Fechar EntityManager ao final
-        entityManager.close();
-        entityManagerFactory.close();
+        try {
+            // Iniciar a execução do menu
+            mainMenu.displayStartMenu();
+        } catch (Exception e) {
+            System.out.println("Erro durante a execução: " + e.getMessage());
+        } finally {
+            // Assegura fechamento do Facade (e recursos associados como EntityManager)
+            facade.close();
+        }
     }
 }

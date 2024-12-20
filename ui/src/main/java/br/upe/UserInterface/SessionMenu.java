@@ -29,16 +29,21 @@ public class SessionMenu {
             System.out.println("4. Deletar Sessão");
             System.out.println("5. Voltar");
 
-            int choice = scanner.nextInt();
-            scanner.nextLine(); // Consumir a linha restante
+            try {
+                int choice = scanner.nextInt();
+                scanner.nextLine(); // Consome a linha restante.
 
-            switch (choice) {
-                case 1 -> listSessions(eventId);
-                case 2 -> createSession(eventId);
-                case 3 -> updateSessionMenu(eventId);
-                case 4 -> deleteSession(eventId);
-                case 5 -> running = false;
-                default -> System.out.println("Escolha inválida. Tente novamente.");
+                switch (choice) {
+                    case 1 -> listSessions(eventId);
+                    case 2 -> createSession(eventId);
+                    case 3 -> updateSessionMenu(eventId);
+                    case 4 -> deleteSession(eventId);
+                    case 5 -> running = false;
+                    default -> System.out.println("Escolha inválida. Tente novamente.");
+                }
+            } catch (Exception e) {
+                System.out.println("Erro no menu: " + e.getMessage());
+                scanner.nextLine(); // Limpa entrada inválida.
             }
         }
     }

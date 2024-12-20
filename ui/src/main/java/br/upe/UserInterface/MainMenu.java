@@ -23,16 +23,24 @@ public class MainMenu {
             System.out.println("2. Criar novo Usuário");
             System.out.println("3. Sair");
 
-            int choice = scanner.nextInt();
-            scanner.nextLine();
+            try {
+                int choice = scanner.nextInt();
+                scanner.nextLine();
 
-            switch (choice) {
-                case 1 -> displayLoginMenu();
-                case 2 -> displayCreateUserMenu();
-                case 3 -> running = false;
-                default -> System.out.println("Escolha inválida. Tente novamente.");
+                switch (choice) {
+                    case 1 -> displayLoginMenu();
+                    case 2 -> displayCreateUserMenu();
+                    case 3 -> running = false;
+                    default -> System.out.println("Escolha inválida. Tente novamente.");
+                }
+            } catch (Exception e) {
+                System.out.println("Erro no menu: " + e.getMessage());
+                scanner.nextLine(); // Limpa a entrada inválida.
             }
         }
+
+        // Fecha o Facade ao sair completamente do menu principal
+        facade.close();
     }
 
     private void displayLoginMenu() {
@@ -51,7 +59,8 @@ public class MainMenu {
     }
 
     private void displayHomeMenu() {
-        String userType = facade.getStateController().getCurrentUser().getClass().getAnnotation(DiscriminatorValue.class).value();
+        String userType = facade.getStateController().getCurrentUser().getClass()
+                .getAnnotation(DiscriminatorValue.class).value();
 
         if ("ADMIN".equals(userType)) {
             new AdminMenu(facade, scanner).displayAdminMenu();
@@ -67,10 +76,10 @@ public class MainMenu {
         System.out.println("2. Criar Usuário Comum");
         System.out.print("Escolha uma opção: ");
 
-        int choice = scanner.nextInt();
-        scanner.nextLine();
-
         try {
+            int choice = scanner.nextInt();
+            scanner.nextLine();
+
             System.out.print("Digite o nome completo: ");
             String name = scanner.nextLine().trim();
             System.out.print("Digite o e-mail: ");

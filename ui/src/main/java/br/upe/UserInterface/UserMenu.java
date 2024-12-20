@@ -2,6 +2,8 @@ package br.upe.UserInterface;
 
 import br.upe.facade.Facade;
 import br.upe.pojos.Event;
+import br.upe.pojos.Subscription;
+
 import java.util.Scanner;
 
 public class UserMenu {
@@ -59,11 +61,13 @@ public class UserMenu {
                     .findFirst()
                     .orElseThrow(() -> new IllegalArgumentException("Evento não encontrado."));
 
+            // Criando a inscrição
+            Subscription subscription = new Subscription();
+            subscription.setEvent(selectedEvent);
+            subscription.setUser(facade.getStateController().getCurrentUser());
+
             // Realizando a inscrição
-            facade.getSubscriptionController().subscribeToEvent(
-                    facade.getStateController().getCurrentUser(),
-                    selectedEvent
-            );
+            facade.getSubscriptionController().subscribeToEvent(subscription);
 
             System.out.println("Inscrição realizada com sucesso para o evento: " + selectedEvent.getTitulo());
         } catch (Exception e) {

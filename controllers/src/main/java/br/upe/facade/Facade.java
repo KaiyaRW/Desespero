@@ -1,7 +1,6 @@
 package br.upe.facade;
 
 import br.upe.controllers.*;
-import jakarta.persistence.EntityManager;
 
 public class Facade {
     private final AdminUserController adminUserController;
@@ -12,32 +11,36 @@ public class Facade {
     private final SubmissionController submissionController;
     private final AuthController authController;
     private final StateController stateController;
+    private final DAOController daoController;
 
     /**
-     * Facade que centraliza acesso aos controladores da aplicação.
-     *
-     * @param entityManager EntityManager usado em todos controladores.
+     * Inicializa o Facade centralizando o DAOController e os controladores.
      */
-    public Facade(EntityManager entityManager) {
+    public Facade() {
+        // Instancia o DAOController
+        this.daoController = new DAOController();
+
         // Instancia os controllers necessários
         this.stateController = new StateController();
-        this.adminUserController = new AdminUserController(entityManager);
-        this.commonUserController = new CommonUserController(entityManager);
-        this.eventController = new EventController(entityManager);
-        this.sessionController = new SessionController(entityManager);
-        this.subscriptionController = new SubscriptionController(entityManager);
-        this.submissionController = new SubmissionController(entityManager);
+        this.adminUserController = new AdminUserController(daoController);
+        this.commonUserController = new CommonUserController(daoController);
+        this.eventController = new EventController(daoController);
+        this.sessionController = new SessionController(daoController);
+        this.subscriptionController = new SubscriptionController(daoController);
+        this.submissionController = new SubmissionController(daoController);
 
-        // Passa os DAOs necessários para o AuthController
-        this.authController = new AuthController(
-                stateController,
-                new DAOController().adminUserDAO,
-                new DAOController().commonUserDAO
-        );
+        // Passa o DAOController diretamente para o AuthController
+        this.authController = new AuthController(stateController, daoController);
     }
 
-    // Métodos de acesso aos controladores
+    /**
+     * Fecha o DAOController e todos os controladores, liberando recursos.
+     */
+    public void close() {
+        daoController.close();
+    }
 
+    // Getters para acesso aos controladores
     public AdminUserController getAdminUserController() {
         return adminUserController;
     }

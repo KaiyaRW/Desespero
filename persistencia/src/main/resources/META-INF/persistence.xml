@@ -2,11 +2,13 @@
              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
              xsi:schemaLocation="https://jakarta.ee/xml/ns/persistence https://jakarta.ee/xml/ns/persistence/persistence_3_0.xsd"
              version="3.0">
-    <persistence-unit name="default">
+    <persistence-unit name="default" transaction-type="RESOURCE_LOCAL">
         <!-- Classes de entidades configuradas no projeto -->
         <class>br.upe.pojos.Subscription</class>
         <class>br.upe.pojos.Event</class>
         <class>br.upe.pojos.Session</class>
+        <class>br.upe.pojos.AdminUser</class>
+        <class>br.upe.pojos.CommonUser</class>
         <class>br.upe.pojos.User</class>
 
         <properties>
@@ -16,18 +18,17 @@
             <property name="jakarta.persistence.jdbc.password" value="M30615215f-"/>
             <property name="jakarta.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
 
-            <!-- Definições adicionais no Hikari -->
+            <!-- Configuração de pool de conexões Hikari -->
             <property name="hibernate.hikari.maximumPoolSize" value="10"/>
             <property name="hibernate.hikari.minimumIdle" value="2"/>
             <property name="hibernate.hikari.idleTimeout" value="30000"/>
             <property name="hibernate.hikari.maxLifetime" value="1800000"/>
             <property name="hibernate.hikari.connectionTimeout" value="20000"/>
 
-            <!-- Configuração automática de schema e logs -->
+            <!-- Configuração automática do schema -->
             <property name="hibernate.hbm2ddl.auto" value="update"/> <!-- Atualiza tabelas automaticamente -->
-            <property name="hibernate.show_sql" value="false"/> <!-- Ativa logs de execução SQL -->
-            <property name="hibernate.format_sql" value="true"/> <!-- Formata os logs SQL -->
-
+            <property name="hibernate.show_sql" value="true"/> <!-- Exibe logs de SQL -->
+            <property name="hibernate.format_sql" value="true"/> <!-- Exibe SQL formatado -->
         </properties>
     </persistence-unit>
 </persistence>

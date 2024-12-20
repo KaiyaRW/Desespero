@@ -1,30 +1,23 @@
 package br.upe.controllers;
 
-import br.upe.dao.AdminUserDAO;
-import br.upe.dao.CommonUserDAO;
 import br.upe.pojos.AdminUser;
 import br.upe.pojos.CommonUser;
 import br.upe.pojos.User;
 
-import jakarta.persistence.EntityManager;
-
-public class AuthController extends BaseController {
+public class AuthController {
 
     private final StateController stateController;
-    private final AdminUserDAO adminUserDAO;
-    private final CommonUserDAO commonUserDAO;
+    private final DAOController daoController;
 
-    public AuthController(StateController stateController, EntityManager entityManager) {
-        super(entityManager);
+    public AuthController(StateController stateController, DAOController daoController) {
         this.stateController = stateController;
-        this.adminUserDAO = new AdminUserDAO(entityManager);
-        this.commonUserDAO = new CommonUserDAO(entityManager);
+        this.daoController = daoController;
     }
 
     public void createNewUser(String name, String email, String password) {
-        executeTransaction(() -> {
-            CommonUser existingUser = commonUserDAO.findByEmail(email).stream().findFirst().orElse(null);
-            AdminUser existingAdmin = adminUserDAO.findByEmail(email).stream().findFirst().orElse(null);
+        daoController.executeTransaction(() -> {
+            CommonUser existingUser = daoController.commonUserDAO.findByEmail(email).stream().findFirst().orElse(null);
+            AdminUser existingAdmin = daoController.adminUserDAO.findByEmail(email).stream().findFirst().orElse(null);
 
             if (existingUser != null || existingAdmin != null) {
                 throw new RuntimeException("Usuário já existe.");
@@ -35,14 +28,14 @@ public class AuthController extends BaseController {
             newUser.setEmail(email);
             newUser.setPassword(password);
 
-            commonUserDAO.save(newUser);
+            daoController.commonUserDAO.save(newUser);
         });
     }
 
     public void createNewAdmin(String name, String email, String password) {
-        executeTransaction(() -> {
-            CommonUser existingUser = commonUserDAO.findByEmail(email).stream().findFirst().orElse(null);
-            AdminUser existingAdmin = adminUserDAO.findByEmail(email).stream().findFirst().orElse(null);
+        daoController.executeTransaction(() -> {
+            CommonUser existingUser = daoController.commonUserDAO.findByEmail(email).stream().findFirst().orElse(null);
+            AdminUser existingAdmin = daoController.adminUserDAO.findByEmail(email).stream().findFirst().orElse(null);
 
             if (existingUser != null || existingAdmin != null) {
                 throw new RuntimeException("Já existe um usuário ou administrador com este e-mail.");
@@ -53,32 +46,33 @@ public class AuthController extends BaseController {
             newAdmin.setEmail(email);
             newAdmin.setPassword(password);
 
-            adminUserDAO.save(newAdmin);
+            daoController.adminUserDAO.save(newAdmin);
         });
     }
 
     public void login(String email, String password) throws Exception {
-        User user = null;
-
-        AdminUser adminUser = adminUserDAO.findByEmail(email).stream().findFirst().orElse(null);
-        if (adminUser != null) {
-            user = adminUser;
-        } else {
-            CommonUser commonUser = commonUserDAO.findByEmail(email).stream().findFirst().orElse(null);
-            if (commonUser != null) {
-                user = commonUser;
+        daoController.executeTransaction(() -> {
+            User user = null;
+            AdminUser adminUser = daoController.adminUserDAO.findByEmail(email).stream().findFirst().orElse(null);
+            if (adminUser != null) {
+                user = adminUser;
+            } else {
+                CommonUser commonUser = daoController.commonUserDAO.findByEmail(email).stream().findFirst().orElse(null);
+                if (commonUser != null) {
+                    user = commonUser;
+                }
             }
-        }
 
-        if (user == null) {
-            throw new Exception("Usuário não encontrado.");
-        }
+            if (user == null || !user.getPassword().equals(password)) {
+                try {
+                    throw new Exception("Login inválido!");
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            }
 
-        if (!user.getPassword().equals(password)) {
-            throw new Exception("Senha incorreta.");
-        }
-
-        stateController.setCurrentUser(user);
+            stateController.setCurrentUser(user);
+        });
     }
 
     public void logout() {

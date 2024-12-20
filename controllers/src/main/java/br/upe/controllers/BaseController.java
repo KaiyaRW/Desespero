@@ -23,29 +23,29 @@ public abstract class BaseController {
             if (transaction.isActive()) {
                 transaction.rollback();
             }
-            throw new RuntimeException("Erro durante execução de transação", e);
+            throw new RuntimeException("Erro ao executar transação: " + e.getMessage(), e);
         }
     }
 
-    protected <T> T executeTransactionWithReturn(ReturnableAction<T> action) {
+    protected <T> T executeTransactionWithReturn(TransactionAction<T> action) {
         EntityTransaction transaction = entityManager.getTransaction();
         try {
             if (!transaction.isActive()) {
                 transaction.begin();
             }
-            T result = action.run();
+            T result = action.execute();
             transaction.commit();
             return result;
         } catch (Exception e) {
             if (transaction.isActive()) {
                 transaction.rollback();
             }
-            throw new RuntimeException("Erro durante execução de transação", e);
+            throw new RuntimeException("Erro ao executar transação: " + e.getMessage(), e);
         }
     }
 
     @FunctionalInterface
-    public interface ReturnableAction<T> {
-        T run();
+    protected interface TransactionAction<T> {
+        T execute();
     }
 }

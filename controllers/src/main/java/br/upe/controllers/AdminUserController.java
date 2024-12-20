@@ -4,35 +4,15 @@ import br.upe.dao.AdminUserDAO;
 import br.upe.pojos.AdminUser;
 import br.upe.pojos.Event;
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityTransaction;
 
 import java.util.List;
 
-public class AdminUserController {
+public class AdminUserController extends BaseController {
     private final AdminUserDAO adminUserDAO;
-    private final EntityManager entityManager;
 
     public AdminUserController(EntityManager entityManager) {
-        this.entityManager = entityManager;
+        super(entityManager);
         this.adminUserDAO = new AdminUserDAO(entityManager);
-    }
-
-    private void executeTransaction(Runnable action) {
-        EntityTransaction transaction = entityManager.getTransaction();
-        try {
-            if (!transaction.isActive()) {
-                transaction.begin();
-            }
-            action.run(); // Executa o código encapsulado na action
-            if (transaction.isActive()) {
-                transaction.commit();
-            }
-        } catch (Exception e) {
-            if (transaction.isActive()) {
-                transaction.rollback();
-            }
-            throw new RuntimeException("Erro durante execução de transação: " + e.getMessage(), e);
-        }
     }
 
     public void updateAdminUserName(Long adminUserId, String newName) {
@@ -79,6 +59,6 @@ public class AdminUserController {
     }
 
     public List<Event> listAdminEvents(Long adminUserId) {
-        return adminUserDAO.findById(adminUserId).getEvents(); // Consulta eventos do admin
+        return adminUserDAO.findById(adminUserId).getEvents();
     }
 }

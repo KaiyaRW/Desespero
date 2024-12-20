@@ -9,6 +9,8 @@ import br.upe.dao.*;
 public class DAOController {
     private static final String PERSISTENCE_UNIT_NAME = "default"; // Nome do persistence-unit
     private final EntityManager entityManager;
+    private final EntityManagerFactory emf;
+
 
     public final EventDAO eventDAO;
     public final SessionDAO sessionDAO;
@@ -18,11 +20,10 @@ public class DAOController {
     public final CommonUserDAO commonUserDAO;
 
     public DAOController() {
-        // Inicializa o EntityManagerFactory e cria o EntityManager
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT_NAME);
+        this.emf = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT_NAME);
         this.entityManager = emf.createEntityManager();
 
-        // Passa o EntityManager para os DAOs que precisam dele
+        // Inicializa DAOs
         this.eventDAO = new EventDAO(entityManager);
         this.sessionDAO = new SessionDAO(entityManager);
         this.submissionDAO = new SubmissionDAO(entityManager);
@@ -31,10 +32,12 @@ public class DAOController {
         this.commonUserDAO = new CommonUserDAO(entityManager);
     }
 
-    // Fecha o EntityManager quando o DAOController for descartado
     public void close() {
         if (entityManager.isOpen()) {
             entityManager.close();
+        }
+        if (emf.isOpen()) {
+            emf.close();
         }
     }
 }

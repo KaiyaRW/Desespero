@@ -2,34 +2,16 @@ package br.upe.controllers;
 
 import br.upe.dao.CommonUserDAO;
 import br.upe.pojos.CommonUser;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityTransaction;
 
-public class CommonUserController {
+import jakarta.persistence.EntityManager;
+
+public class CommonUserController extends BaseController {
+
     private final CommonUserDAO commonUserDAO;
-    private final EntityManager entityManager;
 
     public CommonUserController(EntityManager entityManager) {
-        this.entityManager = entityManager;
+        super(entityManager);
         this.commonUserDAO = new CommonUserDAO(entityManager);
-    }
-
-    private void executeTransaction(Runnable action) {
-        EntityTransaction transaction = entityManager.getTransaction();
-        try {
-            if (!transaction.isActive()) {
-                transaction.begin();
-            }
-            action.run();
-            if (transaction.isActive()) {
-                transaction.commit();
-            }
-        } catch (Exception e) {
-            if (transaction.isActive()) {
-                transaction.rollback();
-            }
-            throw new RuntimeException("Erro durante execução de transação: " + e.getMessage(), e);
-        }
     }
 
     public void updateUserName(Long userId, String newName) {

@@ -6,6 +6,7 @@ import br.upe.pojos.Session;
 import jakarta.persistence.EntityManager;
 
 import java.util.Date;
+import java.util.List;
 
 public class SessionController extends BaseController {
 
@@ -47,5 +48,34 @@ public class SessionController extends BaseController {
             }
             sessionDAO.delete(session);
         });
+    }
+
+    public void updateSessionStartDate(Long sessionId, Date newStartDate) {
+        executeTransaction(() -> {
+            Session session = sessionDAO.findById(sessionId);
+            if (session == null) {
+                throw new IllegalArgumentException("Sessão não encontrada.");
+            }
+            session.setStartDate(newStartDate);
+            sessionDAO.update(session);
+        });
+    }
+
+    public void updateSessionEndDate(Long sessionId, Date newEndDate) {
+        executeTransaction(() -> {
+            Session session = sessionDAO.findById(sessionId);
+            if (session == null) {
+                throw new IllegalArgumentException("Sessão não encontrada.");
+            }
+            session.setEndDate(newEndDate);
+            sessionDAO.update(session);
+        });
+    }
+
+    /**
+     * Retorna uma lista de todas as sessões disponíveis no banco de dados.
+     */
+    public List<Session> getAllSessions() {
+        return executeTransactionWithReturn(() -> sessionDAO.findAll());
     }
 }
